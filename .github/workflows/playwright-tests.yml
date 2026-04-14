@@ -28,7 +28,7 @@ jobs:
       - name: 🌐 Install Playwright browsers
         run: |
           dotnet tool install --global Microsoft.Playwright.CLI
-          playwright install --with-deps
+          playwright install
 
       - name: 🧪 Run tests
         run: dotnet test --logger "trx;LogFileName=test-results.trx"
