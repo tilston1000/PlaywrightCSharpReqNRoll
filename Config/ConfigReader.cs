@@ -9,6 +9,15 @@ public static class ConfigReader
             .AddJsonFile("appsettings.json", optional: false)
             .Build();
 
-        return config.Get<TestSettings>();
+        var settings = config.Get<TestSettings>();
+
+        // Override with environment variable if present
+        var headlessEnv = Environment.GetEnvironmentVariable("HEADLESS");
+        if(!string.IsNullOrEmpty(headlessEnv))
+        {
+            settings.Headless = headlessEnv.ToLower() == "true";
+        }
+
+        return settings;
     }
 }

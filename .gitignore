@@ -1,0 +1,4 @@
+bin/
+obj/
+playwright-report/
+test-results/
