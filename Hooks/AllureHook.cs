@@ -23,6 +23,7 @@ namespace playwrightreqnroll.Hooks
         }
     }
 
+    [Binding]
     public class AllureHook
     {
         private readonly ScenarioContext _scenarioContext;
