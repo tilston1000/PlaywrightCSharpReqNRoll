@@ -5,6 +5,25 @@ namespace playwrightreqnroll.Hooks
 {
     [Binding]
 
+    // Minimal hook to confirm allure-results directory creation in CI
+    public static class AllureDiagnostics
+    {
+        [BeforeTestRun]
+        public static void EnsureAllureResultsDirectory()
+        {
+            try
+            {
+                var dir = Environment.GetEnvironmentVariable("ALLURE_RESULTS_DIRECTORY") ?? "allure-results";
+                Directory.CreateDirectory(dir);
+                File.WriteAllText(Path.Combine(dir, "ci-debug.txt"), $"Created by EnsureAllureResultsDirectory at {DateTime.UtcNow:O}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[AllureDiagnostics] Could not create allure-results directory: {ex}");
+            }
+        }
+    }
+
     public class AllureHook(ScenarioContext _scenarioContext)
     {
 
