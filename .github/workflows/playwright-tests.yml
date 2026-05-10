@@ -36,6 +36,7 @@ jobs:
           HEADLESS: true
           TEST_USERNAME: ${{ secrets.TEST_USERNAME }}
           TEST_PASSWORD: ${{ secrets.TEST_PASSWORD }}
+          ALLURE_RESULTS_DIRECTORY: allure-results
 
       - name: List workspace files
         run: ls -l
