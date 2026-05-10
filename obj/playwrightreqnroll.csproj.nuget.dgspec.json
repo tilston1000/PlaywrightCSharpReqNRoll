@@ -56,6 +56,10 @@
               "target": "Package",
               "version": "[2.14.1, )"
             },
+            "Allure.Reqnroll": {
+              "target": "Package",
+              "version": "[2.14.1, )"
+            },
             "DotNetEnv": {
               "target": "Package",
               "version": "[3.1.1, )"

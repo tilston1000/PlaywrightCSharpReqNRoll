@@ -32,44 +32,9 @@ namespace playwrightreqnroll.Hooks
             _scenarioContext = scenarioContext;
         }
 
-        [BeforeScenario]
-        public void BeforeScenario()
-        {
-            Console.WriteLine("AllureHook.BeforeScenario called");
-            var (displayName, exampleValues) = GetDisplayNameAndExampleValues(_scenarioContext);
-            var uniqueId = $"{displayName.Replace(" ", "_")}_{exampleValues.Replace(" ", "_")}";
-            var tags = _scenarioContext.ScenarioInfo.Tags;
-
-            AllureLifecycle.Instance.StartTestCase(new Allure.Net.Commons.TestResult
-            {
-                name = displayName,
-                fullName = displayName,
-                uuid = uniqueId,
-                historyId = uniqueId,
-                testCaseId = uniqueId,
-                labels = tags.Select(t => new Label { name = "tag", value = t }).ToList()
-            });
-        }
-
         [AfterScenario(Order = 1)]
         public void AfterScenario()
         {
-            if (_scenarioContext.TestError == null)
-            {
-                AllureLifecycle.Instance.UpdateTestCase(testCase => testCase.status = Status.passed);
-            }
-            else
-            {
-                AllureLifecycle.Instance.UpdateTestCase(testCase => 
-                {
-                    testCase.status = Status.failed;
-                    testCase.statusDetails = new StatusDetails 
-                    { 
-                        message = _scenarioContext.TestError?.Message 
-                    };
-                });
-            }
-
             // Attach Playwright screenshot if available
             if (_scenarioContext.ContainsKey("PlaywrightScreenshotPath"))
             {
@@ -77,7 +42,17 @@ namespace playwrightreqnroll.Hooks
                 if (!string.IsNullOrEmpty(screenshotPath) && File.Exists(screenshotPath))
                 {
                     var screenshotBytes = File.ReadAllBytes(screenshotPath);
-                    AllureApi.AddAttachment("Failure Screenshot", "image/png", screenshotBytes, ".png");
+                    AllureApi.AddAttachment(
+                        "Failure Screenshot",
+                        "image/png",
+                        screenshotBytes,
+                        ".png"
+                    );
+                    Console.WriteLine($"[AllureHook] Screenshot attached: {screenshotPath}");
+                }
+                else
+                {
+                    Console.WriteLine($"[AllureHook] Screenshot not found: {screenshotPath}");
                 }
             }
 
@@ -88,12 +63,20 @@ namespace playwrightreqnroll.Hooks
                 if (!string.IsNullOrEmpty(videoPath) && File.Exists(videoPath))
                 {
                     var videoBytes = File.ReadAllBytes(videoPath);
-                    AllureApi.AddAttachment("Test Video", "video/webm", videoBytes, ".webm");
+                    AllureApi.AddAttachment(
+                        "Test Video",
+                        "video/webm",
+                        videoBytes,
+                        ".webm"
+                    );
+                    Console.WriteLine($"[AllureHook] Video attached: {videoPath}");
+                }
+                else
+                {
+                    Console.WriteLine($"[AllureHook] Video not found: {videoPath}");
                 }
             }
-
-            AllureLifecycle.Instance.StopTestCase();
-            AllureLifecycle.Instance.WriteTestCase();
+            // Allure.Reqnroll adapter manages the test lifecycle. Manual StopTestCase/WriteTestCase removed.
         }
 
         private static (string displayName, string exampleValues) GetDisplayNameAndExampleValues(ScenarioContext context)
