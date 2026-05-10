@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("playwrightreqnroll")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a19a0fd14b9ba03d93e5364ae677f3228dea563e")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ecaeaecf215941a572e579ebeb87807763e6785d")]
 [assembly: System.Reflection.AssemblyProductAttribute("playwrightreqnroll")]
 [assembly: System.Reflection.AssemblyTitleAttribute("playwrightreqnroll")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

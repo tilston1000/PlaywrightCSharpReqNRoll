@@ -8580,6 +8580,7 @@
       "FluentAssertions >= 8.9.0",
       "MSTest.TestAdapter >= 4.2.1",
       "MSTest.TestFramework >= 4.2.1",
+      "Microsoft.Bcl.AsyncInterfaces >= 9.0.6",
       "Microsoft.Extensions.Configuration >= 10.0.5",
       "Microsoft.Extensions.Configuration.Binder >= 10.0.5",
       "Microsoft.Extensions.Configuration.Json >= 10.0.5",
@@ -8668,6 +8669,10 @@
           "MSTest.TestFramework": {
             "target": "Package",
             "version": "[4.2.1, )"
+          },
+          "Microsoft.Bcl.AsyncInterfaces": {
+            "target": "Package",
+            "version": "[9.0.6, )"
           },
           "Microsoft.Extensions.Configuration": {
             "target": "Package",
