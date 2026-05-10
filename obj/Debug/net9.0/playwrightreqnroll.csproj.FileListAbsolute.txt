@@ -477,7 +477,9 @@ C:\source\Training\Playwright\playwrightreqnroll\bin\Debug\net9.0\playwrightreqn
 C:\source\Training\Playwright\playwrightreqnroll\bin\Debug\net9.0\playwrightreqnroll.dll
 C:\source\Training\Playwright\playwrightreqnroll\bin\Debug\net9.0\playwrightreqnroll.pdb
 C:\source\Training\Playwright\playwrightreqnroll\bin\Debug\net9.0\Allure.Net.Commons.dll
+C:\source\Training\Playwright\playwrightreqnroll\bin\Debug\net9.0\Allure.ReqnrollPlugin.dll
 C:\source\Training\Playwright\playwrightreqnroll\bin\Debug\net9.0\AspectInjector.Broker.dll
+C:\source\Training\Playwright\playwrightreqnroll\bin\Debug\net9.0\CsvHelper.dll
 C:\source\Training\Playwright\playwrightreqnroll\bin\Debug\net9.0\CucumberExpressions.dll
 C:\source\Training\Playwright\playwrightreqnroll\bin\Debug\net9.0\Cucumber.HtmlFormatter.dll
 C:\source\Training\Playwright\playwrightreqnroll\bin\Debug\net9.0\Cucumber.Messages.dll
@@ -676,5 +678,3 @@ C:\source\Training\Playwright\playwrightreqnroll\obj\Debug\net9.0\refint\playwri
 C:\source\Training\Playwright\playwrightreqnroll\obj\Debug\net9.0\playwrightreqnroll.pdb
 C:\source\Training\Playwright\playwrightreqnroll\obj\Debug\net9.0\playwrightreqnroll.genruntimeconfig.cache
 C:\source\Training\Playwright\playwrightreqnroll\obj\Debug\net9.0\ref\playwrightreqnroll.dll
-C:\source\Training\Playwright\playwrightreqnroll\bin\Debug\net9.0\Allure.ReqnrollPlugin.dll
-C:\source\Training\Playwright\playwrightreqnroll\bin\Debug\net9.0\CsvHelper.dll
