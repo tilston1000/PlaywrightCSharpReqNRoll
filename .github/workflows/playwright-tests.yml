@@ -60,6 +60,23 @@ jobs:
             echo "allure-results directory does not exist"
           fi
 
+      - name: List allure-results contents after test
+        run: |
+          if [ -d "allure-results" ]; then
+            ls -l allure-results
+            find allure-results -type f
+          else
+            echo "allure-results directory does not exist"
+          fi
+
+      - name: Print ci-debug.txt if exists
+        run: |
+          if [ -f "allure-results/ci-debug.txt" ]; then
+            cat allure-results/ci-debug.txt
+          else
+            echo "ci-debug.txt not found"
+          fi
+
       # --- Allure Integration ---
       - name: Install Allure CLI
         run: |
