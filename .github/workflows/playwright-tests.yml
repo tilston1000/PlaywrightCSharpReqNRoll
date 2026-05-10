@@ -42,6 +42,17 @@ jobs:
           echo "Searching for Microsoft.Bcl.AsyncInterfaces.dll"
           find bin/Debug/net9.0/ -name 'Microsoft.Bcl.AsyncInterfaces.dll' || echo "AsyncInterfaces DLL not found"
 
+      - name: Show Microsoft.Bcl.AsyncInterfaces.dll version
+        run: |
+          dll="bin/Debug/net9.0/Microsoft.Bcl.AsyncInterfaces.dll"
+          if [ -f "$dll" ]; then
+            echo "DLL found: $dll"
+            file "$dll"
+            strings "$dll" | grep -E 'Microsoft.Bcl.AsyncInterfaces, Version=' || echo "Version string not found"
+          else
+            echo "DLL not found"
+          fi
+
       - name: 🧪 Run tests
         run: dotnet test --logger "trx;LogFileName=test-results.trx" --verbosity normal --diag:diag.log
         working-directory: ${{ github.workspace }}
