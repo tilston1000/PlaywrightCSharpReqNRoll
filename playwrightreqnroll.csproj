@@ -17,6 +17,12 @@
     </Content>
   </ItemGroup>
 
+    <ItemGroup>
+      <None Update="Allure.ReqnrollPlugin.dll">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
   <ItemGroup>
     <PackageReference Include="DotNetEnv" Version="3.1.1" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.4.0" />
