@@ -3,10 +3,9 @@ using Reqnroll;
 
 namespace playwrightreqnroll.Hooks
 {
-    [Binding]
-
     // Minimal hook to confirm allure-results directory creation in CI
-    public static class AllureDiagnostics
+    [Binding]
+    public class AllureDiagnostics
     {
         [BeforeTestRun]
         public static void EnsureAllureResultsDirectory()
