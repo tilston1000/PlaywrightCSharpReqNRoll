@@ -23,14 +23,20 @@ namespace playwrightreqnroll.Hooks
         }
     }
 
-    public class AllureHook(ScenarioContext _scenarioContext)
+    public class AllureHook
     {
+        private readonly ScenarioContext _scenarioContext;
+        public AllureHook(ScenarioContext scenarioContext)
+        {
+            _scenarioContext = scenarioContext;
+        }
 
         [BeforeScenario]
         public void BeforeScenario()
         {
+            Console.WriteLine("AllureHook.BeforeScenario called");
             var (displayName, exampleValues) = GetDisplayNameAndExampleValues(_scenarioContext);
-            var uniqueId = $"{displayName.Replace(" ", "_")}_{exampleValues.Replace(" ", "_")}";
+            var uniqueId = $"{displayName.Replace(" ", "_")}_{exampleValues.Replace(" ", "_"}";
             var tags = _scenarioContext.ScenarioInfo.Tags;
 
             AllureLifecycle.Instance.StartTestCase(new Allure.Net.Commons.TestResult
