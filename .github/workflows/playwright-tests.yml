@@ -37,7 +37,7 @@ jobs:
           HEADLESS: true
           TEST_USERNAME: ${{ secrets.TEST_USERNAME }}
           TEST_PASSWORD: ${{ secrets.TEST_PASSWORD }}
-          ALLURE_RESULTS_DIRECTORY: allure-results
+          ALLURE_RESULTS_DIRECTORY: ${{ github.workspace }}/allure-results
           ALLURE_LOG_LEVEL: debug
 
       - name: Print working directory
@@ -51,14 +51,6 @@ jobs:
 
       - name: List workspace files
         run: ls -l
-
-      - name: List allure-results contents
-        run: |
-          if [ -d "allure-results" ]; then
-            ls -l allure-results
-          else
-            echo "allure-results directory does not exist"
-          fi
 
       - name: List allure-results contents after test
         run: |
