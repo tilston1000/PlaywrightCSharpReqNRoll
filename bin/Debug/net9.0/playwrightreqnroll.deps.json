@@ -9,6 +9,7 @@
       "playwrightreqnroll/1.0.0": {
         "dependencies": {
           "Allure.Net.Commons": "2.14.1",
+          "Allure.Reqnroll": "2.14.1",
           "DotNetEnv": "3.1.1",
           "FluentAssertions": "8.9.0",
           "MSTest.TestAdapter": "4.2.1",
@@ -46,6 +47,20 @@
           }
         }
       },
+      "Allure.Reqnroll/2.14.1": {
+        "dependencies": {
+          "Allure.Net.Commons": "2.14.1",
+          "CsvHelper": "33.1.0",
+          "Reqnroll": "3.3.4",
+          "System.Collections.Specialized": "4.3.0"
+        },
+        "runtime": {
+          "lib/netstandard2.0/Allure.ReqnrollPlugin.dll": {
+            "assemblyVersion": "2.14.1.0",
+            "fileVersion": "2.14.1.0"
+          }
+        }
+      },
       "AspectInjector/2.8.1": {
         "runtime": {
           "lib/netstandard2.0/AspectInjector.Broker.dll": {
@@ -55,6 +70,14 @@
         }
       },
       "coverlet.collector/6.0.2": {},
+      "CsvHelper/33.1.0": {
+        "runtime": {
+          "lib/net9.0/CsvHelper.dll": {
+            "assemblyVersion": "33.0.0.0",
+            "fileVersion": "33.1.0.26"
+          }
+        }
+      },
       "Cucumber.CucumberExpressions/17.1.0": {
         "runtime": {
           "lib/netstandard2.0/CucumberExpressions.dll": {
@@ -1050,6 +1073,27 @@
         }
       },
       "System.Collections.Immutable/8.0.0": {},
+      "System.Collections.NonGeneric/4.3.0": {
+        "dependencies": {
+          "System.Diagnostics.Debug": "4.3.0",
+          "System.Globalization": "4.3.0",
+          "System.Resources.ResourceManager": "4.3.0",
+          "System.Runtime": "4.3.1",
+          "System.Runtime.Extensions": "4.3.0",
+          "System.Threading": "4.3.0"
+        }
+      },
+      "System.Collections.Specialized/4.3.0": {
+        "dependencies": {
+          "System.Collections.NonGeneric": "4.3.0",
+          "System.Globalization": "4.3.0",
+          "System.Globalization.Extensions": "4.3.0",
+          "System.Resources.ResourceManager": "4.3.0",
+          "System.Runtime": "4.3.1",
+          "System.Runtime.Extensions": "4.3.0",
+          "System.Threading": "4.3.0"
+        }
+      },
       "System.ComponentModel.Annotations/5.0.0": {},
       "System.Console/4.3.0": {
         "dependencies": {
@@ -1669,6 +1713,13 @@
       "path": "allure.net.commons/2.14.1",
       "hashPath": "allure.net.commons.2.14.1.nupkg.sha512"
     },
+    "Allure.Reqnroll/2.14.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-1TPDeoLxPvIc8yxAQqEXCxvIh20KxxNj6qCYKvmdSGbTvXBsM2amA5RxkCH0IGLMKknuNy5qlKSKOwbWkb+2Tw==",
+      "path": "allure.reqnroll/2.14.1",
+      "hashPath": "allure.reqnroll.2.14.1.nupkg.sha512"
+    },
     "AspectInjector/2.8.1": {
       "type": "package",
       "serviceable": true,
@@ -1682,6 +1733,13 @@
       "sha512": "sha512-bJShQ6uWRTQ100ZeyiMqcFlhP7WJ+bCuabUs885dJiBEzMsJMSFr7BOyeCw4rgvQokteGi5rKQTlkhfQPUXg2A==",
       "path": "coverlet.collector/6.0.2",
       "hashPath": "coverlet.collector.6.0.2.nupkg.sha512"
+    },
+    "CsvHelper/33.1.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-kqfTOZGrn7NarNeXgjh86JcpTHUoeQDMB8t9NVa/ZtlSYiV1rxfRnQ49WaJsob4AiGrbK0XDzpyKkBwai4F8eg==",
+      "path": "csvhelper/33.1.0",
+      "hashPath": "csvhelper.33.1.0.nupkg.sha512"
     },
     "Cucumber.CucumberExpressions/17.1.0": {
       "type": "package",
@@ -2144,6 +2202,20 @@
       "sha512": "sha512-AurL6Y5BA1WotzlEvVaIDpqzpIPvYnnldxru8oXJU2yFxFUy3+pNXjXd1ymO+RA0rq0+590Q8gaz2l3Sr7fmqg==",
       "path": "system.collections.immutable/8.0.0",
       "hashPath": "system.collections.immutable.8.0.0.nupkg.sha512"
+    },
+    "System.Collections.NonGeneric/4.3.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-prtjIEMhGUnQq6RnPEYLpFt8AtLbp9yq2zxOSrY7KJJZrw25Fi97IzBqY7iqssbM61Ek5b8f3MG/sG1N2sN5KA==",
+      "path": "system.collections.nongeneric/4.3.0",
+      "hashPath": "system.collections.nongeneric.4.3.0.nupkg.sha512"
+    },
+    "System.Collections.Specialized/4.3.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-Epx8PoVZR0iuOnJJDzp7pWvdfMMOAvpUo95pC4ScH2mJuXkKA2Y4aR3cG9qt2klHgSons1WFh4kcGW7cSXvrxg==",
+      "path": "system.collections.specialized/4.3.0",
+      "hashPath": "system.collections.specialized.4.3.0.nupkg.sha512"
     },
     "System.ComponentModel.Annotations/5.0.0": {
       "type": "package",
