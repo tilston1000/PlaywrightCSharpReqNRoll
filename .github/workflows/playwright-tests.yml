@@ -31,7 +31,7 @@ jobs:
           playwright install
 
       - name: 🧪 Run tests
-        run: dotnet test --logger "trx;LogFileName=test-results.trx"
+        run: dotnet test --logger "trx;LogFileName=test-results.trx" --verbosity normal
         working-directory: ${{ github.workspace }}
         env:
           HEADLESS: true
