@@ -17,6 +17,10 @@
     </Content>
   </ItemGroup>
 
+  <ItemGroup>
+    <ReqnrollPlugin Include="Allure.ReqnrollPlugin" />
+  </ItemGroup>
+
     <ItemGroup>
       <None Update="Allure.ReqnrollPlugin.dll">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
