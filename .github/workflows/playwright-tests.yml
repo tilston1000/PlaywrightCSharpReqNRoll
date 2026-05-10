@@ -30,7 +30,6 @@ jobs:
           dotnet tool install --global Microsoft.Playwright.CLI
           playwright install
 
-
       - name: List output directory for Allure plugin
         run: |
           echo "Listing bin/Debug/net9.0/"
@@ -39,7 +38,7 @@ jobs:
           find bin/Debug/net9.0/ -name 'Allure.ReqnrollPlugin.dll' || echo "Plugin DLL not found"
 
       - name: 🧪 Run tests
-        run: dotnet test --logger "trx;LogFileName=test-results.trx" --verbosity normal
+        run: dotnet test --logger "trx;LogFileName=test-results.trx" --verbosity normal --diag:diag.log
         working-directory: ${{ github.workspace }}
         env:
           HEADLESS: true
@@ -47,6 +46,17 @@ jobs:
           TEST_PASSWORD: ${{ secrets.TEST_PASSWORD }}
           ALLURE_RESULTS_DIRECTORY: ${{ github.workspace }}/allure-results
           ALLURE_LOG_LEVEL: debug
+
+      - name: Upload diag.log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: diag-log
+          path: diag.log
+          if-no-files-found: warn
+          compression-level: 6
+          overwrite: false
+          include-hidden-files: false
 
       - name: Print working directory
         run: pwd
