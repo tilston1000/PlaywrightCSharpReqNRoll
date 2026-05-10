@@ -1,7 +1,7 @@
 C:\source\Training\Playwright\playwrightreqnroll\bin\Debug\net9.0\testhost.dll
 C:\source\Training\Playwright\playwrightreqnroll\bin\Debug\net9.0\Reqnroll.Microsoft.Extensions.DependencyInjection.ReqnrollPlugin.dll
 C:\source\Training\Playwright\playwrightreqnroll\bin\Debug\net9.0\testhost.exe
-C:\source\Training\Playwright\playwrightreqnroll\bin\Debug\net9.0\Config\appsettings.json
+C:\source\Training\Playwright\playwrightreqnroll\bin\Debug\net9.0\appsettings.json
 C:\source\Training\Playwright\playwrightreqnroll\bin\Debug\net9.0\.playwright\node\win32_x64\node.exe
 C:\source\Training\Playwright\playwrightreqnroll\bin\Debug\net9.0\.playwright\node\LICENSE
 C:\source\Training\Playwright\playwrightreqnroll\bin\Debug\net9.0\.playwright\package\api.json
@@ -476,9 +476,12 @@ C:\source\Training\Playwright\playwrightreqnroll\bin\Debug\net9.0\playwrightreqn
 C:\source\Training\Playwright\playwrightreqnroll\bin\Debug\net9.0\playwrightreqnroll.runtimeconfig.json
 C:\source\Training\Playwright\playwrightreqnroll\bin\Debug\net9.0\playwrightreqnroll.dll
 C:\source\Training\Playwright\playwrightreqnroll\bin\Debug\net9.0\playwrightreqnroll.pdb
+C:\source\Training\Playwright\playwrightreqnroll\bin\Debug\net9.0\Allure.Net.Commons.dll
+C:\source\Training\Playwright\playwrightreqnroll\bin\Debug\net9.0\AspectInjector.Broker.dll
 C:\source\Training\Playwright\playwrightreqnroll\bin\Debug\net9.0\CucumberExpressions.dll
 C:\source\Training\Playwright\playwrightreqnroll\bin\Debug\net9.0\Cucumber.HtmlFormatter.dll
 C:\source\Training\Playwright\playwrightreqnroll\bin\Debug\net9.0\Cucumber.Messages.dll
+C:\source\Training\Playwright\playwrightreqnroll\bin\Debug\net9.0\DotNetEnv.dll
 C:\source\Training\Playwright\playwrightreqnroll\bin\Debug\net9.0\FluentAssertions.dll
 C:\source\Training\Playwright\playwrightreqnroll\bin\Debug\net9.0\Gherkin.dll
 C:\source\Training\Playwright\playwrightreqnroll\bin\Debug\net9.0\Microsoft.ApplicationInsights.dll
@@ -510,11 +513,13 @@ C:\source\Training\Playwright\playwrightreqnroll\bin\Debug\net9.0\Microsoft.Test
 C:\source\Training\Playwright\playwrightreqnroll\bin\Debug\net9.0\Microsoft.TestPlatform.CrossPlatEngine.dll
 C:\source\Training\Playwright\playwrightreqnroll\bin\Debug\net9.0\Microsoft.TestPlatform.Utilities.dll
 C:\source\Training\Playwright\playwrightreqnroll\bin\Debug\net9.0\Microsoft.VisualStudio.TestPlatform.Common.dll
+C:\source\Training\Playwright\playwrightreqnroll\bin\Debug\net9.0\MimeTypesMap.dll
 C:\source\Training\Playwright\playwrightreqnroll\bin\Debug\net9.0\MSTest.TestFramework.dll
 C:\source\Training\Playwright\playwrightreqnroll\bin\Debug\net9.0\Newtonsoft.Json.dll
 C:\source\Training\Playwright\playwrightreqnroll\bin\Debug\net9.0\Reqnroll.Utils.dll
 C:\source\Training\Playwright\playwrightreqnroll\bin\Debug\net9.0\Reqnroll.dll
 C:\source\Training\Playwright\playwrightreqnroll\bin\Debug\net9.0\Reqnroll.MSTest.ReqnrollPlugin.dll
+C:\source\Training\Playwright\playwrightreqnroll\bin\Debug\net9.0\Sprache.dll
 C:\source\Training\Playwright\playwrightreqnroll\bin\Debug\net9.0\System.IO.Pipelines.dll
 C:\source\Training\Playwright\playwrightreqnroll\bin\Debug\net9.0\System.Text.Encodings.Web.dll
 C:\source\Training\Playwright\playwrightreqnroll\bin\Debug\net9.0\System.Text.Json.dll
@@ -664,6 +669,7 @@ C:\source\Training\Playwright\playwrightreqnroll\obj\Debug\net9.0\playwrightreqn
 C:\source\Training\Playwright\playwrightreqnroll\obj\Debug\net9.0\playwrightreqnroll.AssemblyInfo.cs
 C:\source\Training\Playwright\playwrightreqnroll\obj\Debug\net9.0\playwrightreqnroll.csproj.CoreCompileInputs.cache
 C:\source\Training\Playwright\playwrightreqnroll\obj\Debug\net9.0\MSTest.AssemblyHooks.playwrightreqnroll.cs
+C:\source\Training\Playwright\playwrightreqnroll\obj\Debug\net9.0\playwrightreqnroll.sourcelink.json
 C:\source\Training\Playwright\playwrightreqnroll\obj\Debug\net9.0\playwrig.C48E0D22.Up2Date
 C:\source\Training\Playwright\playwrightreqnroll\obj\Debug\net9.0\playwrightreqnroll.dll
 C:\source\Training\Playwright\playwrightreqnroll\obj\Debug\net9.0\refint\playwrightreqnroll.dll

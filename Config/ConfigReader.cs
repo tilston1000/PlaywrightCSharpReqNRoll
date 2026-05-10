@@ -1,23 +1,27 @@
 using Microsoft.Extensions.Configuration;
 
-public static class ConfigReader
+namespace playwrightreqnroll.Config
 {
-    public static TestSettings Load()
+    public static class ConfigReader
     {
-        var config = new ConfigurationBuilder()
-            .SetBasePath(AppContext.BaseDirectory)
-            .AddJsonFile("appsettings.json", optional: false)
-            .Build();
-
-        var settings = config.Get<TestSettings>();
-
-        // Override with environment variable if present
-        var headlessEnv = Environment.GetEnvironmentVariable("HEADLESS");
-        if(!string.IsNullOrEmpty(headlessEnv))
+        public static TestSettings Load()
         {
-            settings.Headless = headlessEnv.ToLower() == "true";
-        }
+            var config = new ConfigurationBuilder()
+                .SetBasePath(AppContext.BaseDirectory)
+                .AddJsonFile("appsettings.json", optional: false)
+                .Build();
 
-        return settings;
+            var settings = config.Get<TestSettings>();
+            if (settings == null)
+                throw new InvalidOperationException("Failed to load TestSettings from appsettings.json.");
+
+            var headlessEnv = Environment.GetEnvironmentVariable("HEADLESS");
+            if(!string.IsNullOrEmpty(headlessEnv))
+            {
+                settings.Headless = string.Equals(headlessEnv, "true", StringComparison.OrdinalIgnoreCase);
+            }
+
+            return settings;
+        }
     }
 }
