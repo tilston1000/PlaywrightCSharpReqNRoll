@@ -1,21 +1,51 @@
 using Microsoft.Playwright;
+using playwrightreqnroll.Drivers;
 
-public class ProductsPage
+namespace playwrightreqnroll.Pages
 {
-    private readonly IPage _page;
-
-    public ProductsPage(PlaywrightDriver driver)
+    public class ProductsPage
     {
-        _page = driver.Page;
-    }
+        private readonly PlaywrightDriver _driver;
+        private IPage Page => _driver.Page!;
 
-    public async Task AddFirstItemToCart()
-    {
-        await _page.ClickAsync(".inventory_item button");
-    }
+        private const string InventoryItemButtonSelector = ".inventory_item_button";
+        private const string ShoppingCartLinkSelector = ".shopping_cart_link";
+        private const string ProductContainerSelectorTemplate = ".inventory_item:has(.inventory_item_name:text-is('{0}'))";
+        private const string AddToCartButtonName = "Add to cart";
 
-    public async Task GoToCart()
-    {
-        await _page.ClickAsync(".shopping_cart_link");
+        public ProductsPage(PlaywrightDriver driver)
+        {
+            _driver = driver;
+            if (_driver.Page == null)
+                throw new InvalidOperationException("Playwright page is not initialized. Ensure the driver is started before using ProductsPage.");
+        }
+
+        public async Task AddFirstItemToCart()
+        {
+            await Page.ClickAsync(InventoryItemButtonSelector);
+        }
+
+        public async Task GoToCart()
+        {
+            await Page.ClickAsync(ShoppingCartLinkSelector);
+        }
+        
+        public ILocator GetProductContainerByName(string productName)
+        {
+            var selector = string.Format(ProductContainerSelectorTemplate, productName);
+            return Page.Locator(selector);
+        }
+
+        public static async Task AddToCart(ILocator productContainer)
+        {
+            var addButton = productContainer.GetByRole(AriaRole.Button, new() { Name = AddToCartButtonName });
+            await addButton.ClickAsync();
+        }
+
+        public async Task AddProductToCartByName(string productName)
+        {
+            var productContainer = GetProductContainerByName(productName);
+            await AddToCart(productContainer);
+        }
     }
 }

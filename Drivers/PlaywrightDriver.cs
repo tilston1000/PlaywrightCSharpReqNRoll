@@ -1,27 +1,48 @@
 using Microsoft.Playwright;
 
-public class PlaywrightDriver
+namespace playwrightreqnroll.Drivers
 {
-    public IPlaywright Playwright { get; private set; }
-    public IBrowser Browser { get; private set; }
-    public IBrowserContext Context { get; private set; }
-    public IPage Page {get; private set;}
-
-    public async Task StartAsync(bool headless)
+    public class PlaywrightDriver : IAsyncDisposable, IDisposable
     {
-        Playwright = await Microsoft.Playwright.Playwright.CreateAsync();
-        Browser = await Playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions()
+        private IPlaywright? _playwright;
+        private IBrowser? _browser;
+        private IBrowserContext? _context;
+        public IPage? Page {get; private set;}
+
+        public async Task StartAsync(bool headless, string? videoDir = null, int timeout = 5000)
         {
-            Headless = headless
-        });
+            _playwright = await Playwright.CreateAsync();
+            _browser = await _playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions()
+            {
+                Headless = headless,
+                SlowMo = 300 // Slow down by 100ms between actions (adjust as needed)
+            });
 
-        Context = await Browser.NewContextAsync();
-        Page = await Context.NewPageAsync();
+
+            _context = await _browser.NewContextAsync(new BrowserNewContextOptions
+            {
+                RecordVideoDir = videoDir
+            });
+
+            _context.SetDefaultTimeout(timeout);
+
+            Page = await _context.NewPageAsync();
+        }
+
+
+        public async ValueTask DisposeAsync()
+        {
+            if (Page != null) await Page.CloseAsync();
+            if (_context != null) await _context.CloseAsync();
+            if (_browser != null) await _browser.CloseAsync();
+            _playwright?.Dispose();
+            GC.SuppressFinalize(this);
+        }
+
+        public void Dispose()
+        {
+            GC.SuppressFinalize(this);
+            // No-op. Required for compatibility with DI containers that expect IDisposable.
+        }
     }
-
-    public async Task DisposeAsync()
-    {
-        await Browser?.CloseAsync();
-    }
-
 }
