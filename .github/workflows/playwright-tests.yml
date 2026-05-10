@@ -37,6 +37,11 @@ jobs:
           echo "Searching for Allure.ReqnrollPlugin.dll"
           find bin/Debug/net9.0/ -name 'Allure.ReqnrollPlugin.dll' || echo "Plugin DLL not found"
 
+      - name: List output directory for AsyncInterfaces
+        run: |
+          echo "Searching for Microsoft.Bcl.AsyncInterfaces.dll"
+          find bin/Debug/net9.0/ -name 'Microsoft.Bcl.AsyncInterfaces.dll' || echo "AsyncInterfaces DLL not found"
+
       - name: 🧪 Run tests
         run: dotnet test --logger "trx;LogFileName=test-results.trx" --verbosity normal --diag:diag.log
         working-directory: ${{ github.workspace }}
