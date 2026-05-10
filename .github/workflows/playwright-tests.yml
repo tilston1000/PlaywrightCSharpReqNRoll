@@ -38,6 +38,16 @@ jobs:
           TEST_USERNAME: ${{ secrets.TEST_USERNAME }}
           TEST_PASSWORD: ${{ secrets.TEST_PASSWORD }}
           ALLURE_RESULTS_DIRECTORY: allure-results
+          ALLURE_LOG_LEVEL: debug
+
+      - name: Print working directory
+        run: pwd
+
+      - name: Print environment variables
+        run: printenv | sort
+
+      - name: List files before test run
+        run: ls -l
 
       - name: List workspace files
         run: ls -l
