@@ -30,6 +30,14 @@ jobs:
           dotnet tool install --global Microsoft.Playwright.CLI
           playwright install
 
+
+      - name: List output directory for Allure plugin
+        run: |
+          echo "Listing bin/Debug/net9.0/"
+          ls -l bin/Debug/net9.0/
+          echo "Searching for Allure.ReqnrollPlugin.dll"
+          find bin/Debug/net9.0/ -name 'Allure.ReqnrollPlugin.dll' || echo "Plugin DLL not found"
+
       - name: 🧪 Run tests
         run: dotnet test --logger "trx;LogFileName=test-results.trx" --verbosity normal
         working-directory: ${{ github.workspace }}
