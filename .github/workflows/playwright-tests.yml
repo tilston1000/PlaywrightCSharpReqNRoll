@@ -9,6 +9,9 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    env:
+      ALLURE_RESULTS_DIRECTORY: ${{ github.workspace }}/allure-results
+      ALLURE_LOG_LEVEL: debug
 
     steps:
       - name: ⬇️ Checkout repo
@@ -40,7 +43,6 @@ jobs:
           dotnet tool install --global Microsoft.Playwright.CLI
           playwright install
         working-directory: ${{ github.workspace }}
-
 
       - name: List output directory for Allure plugin (all platforms)
         run: |
@@ -77,8 +79,6 @@ jobs:
           HEADLESS: true
           TEST_USERNAME: ${{ secrets.TEST_USERNAME }}
           TEST_PASSWORD: ${{ secrets.TEST_PASSWORD }}
-          ALLURE_RESULTS_DIRECTORY: ${{ github.workspace }}/allure-results
-          ALLURE_LOG_LEVEL: debug
 
       - name: Upload diag.log
         if: always()
