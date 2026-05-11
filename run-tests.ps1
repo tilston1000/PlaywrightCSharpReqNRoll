@@ -21,8 +21,13 @@ if (Test-Path "allure-report/history") {
 # Set Allure output directory
 $env:ALLURE_RESULTS_DIRECTORY = "allure-results"
 
-# Define path to bin folder
-$binPath = "bin\Debug\net9.0"
+
+# Find the correct bin output path (handles win-x64, linux-x64, etc.)
+$binRoot = "bin\Debug\net9.0"
+$binPath = $binRoot
+if (Test-Path "$binRoot\win-x64") { $binPath = "$binRoot\win-x64" }
+elseif (Test-Path "$binRoot\linux-x64") { $binPath = "$binRoot\linux-x64" }
+elseif (Test-Path "$binRoot\osx-x64") { $binPath = "$binRoot\osx-x64" }
 
 # Build and Run tests
 dotnet build

@@ -99,8 +99,27 @@ namespace playwrightreqnroll.Hooks
 
         private static void LoadEnvVariables()
         {
-            // This loads everything from .env into environment variables
-            Env.Load(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", ".env"));
+            // Robustly search for .env in parent directories
+            string? dir = AppContext.BaseDirectory;
+            string? envPath = null;
+            while (dir != null)
+            {
+                var candidate = Path.Combine(dir, ".env");
+                if (File.Exists(candidate))
+                {
+                    envPath = candidate;
+                    break;
+                }
+                dir = Path.GetDirectoryName(dir);
+            }
+            if (envPath != null)
+            {
+                Env.Load(envPath);
+            }
+            else
+            {
+                Console.WriteLine("[WARN] .env file not found in any parent directory.");
+            }
             _settings = ConfigReader.Load();
         }
 
