@@ -1,6 +1,6 @@
 {
   "allure": {
-    "resultsDirectory": "./allure-results",
+    "resultsDirectory": "allure-results",
     "plugins": ["Allure.ReqnrollPlugin"]
   }
 }

@@ -13,6 +13,8 @@ namespace playwrightreqnroll.Hooks
             try
             {
                 var dir = Environment.GetEnvironmentVariable("ALLURE_RESULTS_DIRECTORY") ?? "allure-results";
+                // Always use relative path for allure-results
+                dir = "allure-results";
                 Directory.CreateDirectory(dir);
                 File.WriteAllText(Path.Combine(dir, "ci-debug.txt"), $"Created by EnsureAllureResultsDirectory at {DateTime.UtcNow:O}");
             }
