@@ -34,9 +34,6 @@ jobs:
       - name: 🏗️ Build project
         run: dotnet build playwrightreqnroll.csproj --no-restore --runtime linux-x64
 
-      - name: List build output before Playwright install
-        run: ls -lR bin/Debug/net9.0/
-
       - name: Check for Microsoft.Bcl.AsyncInterfaces.dll
         run: |
           echo "Searching for Microsoft.Bcl.AsyncInterfaces.dll in all output directories..."
@@ -67,26 +64,6 @@ jobs:
           echo "Searching for Allure.ReqnrollPlugin.dll in all subdirs"
           find bin/Debug/net9.0/ -name 'Allure.ReqnrollPlugin.dll' || echo "Plugin DLL not found"
 
-      - name: List output directory for AsyncInterfaces (all platforms)
-        run: |
-          echo "Searching for Microsoft.Bcl.AsyncInterfaces.dll in all subdirs"
-          find bin/Debug/net9.0/ -name 'Microsoft.Bcl.AsyncInterfaces.dll' || echo "AsyncInterfaces DLL not found"
-
-      - name: Print ALLURE_RESULTS_DIRECTORY
-        run: echo "ALLURE_RESULTS_DIRECTORY=$ALLURE_RESULTS_DIRECTORY"
-
-      - name: Show Microsoft.Bcl.AsyncInterfaces.dll version (all platforms)
-        run: |
-          for dll in bin/Debug/net9.0/Microsoft.Bcl.AsyncInterfaces.dll bin/Debug/net9.0/linux-x64/Microsoft.Bcl.AsyncInterfaces.dll; do
-            if [ -f "$dll" ]; then
-              echo "DLL found: $dll"
-              file "$dll"
-              strings "$dll" | grep -E 'Microsoft.Bcl.AsyncInterfaces, Version=' || echo "Version string not found"
-            else
-              echo "DLL not found at $dll"
-            fi
-          done
-
       - name: 🧪 Run tests
         run: dotnet test --logger "trx;LogFileName=test-results.trx" --verbosity normal --diag:diag.log
         working-directory: ${{ github.workspace }}
@@ -95,29 +72,7 @@ jobs:
           TEST_USERNAME: ${{ secrets.TEST_USERNAME }}
           TEST_PASSWORD: ${{ secrets.TEST_PASSWORD }}
 
-      - name: Upload diag.log
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: diag-log
-          path: diag.log
-          if-no-files-found: warn
-          compression-level: 6
-          overwrite: false
-          include-hidden-files: false
-
-      - name: Print working directory
-        run: pwd
-
-      - name: Print environment variables
-        run: printenv | sort
-
-      - name: List files before test run
-        run: ls -l
-
-      - name: List workspace files
-        run: ls -l
-
+      # --- Allure Integration ---
       - name: Find and list all allure-results directories after test
         run: |
           echo "Searching for all allure-results directories in workspace..."
@@ -132,15 +87,6 @@ jobs:
             echo "No allure-results directory found anywhere in workspace!"
           fi
 
-      - name: Print ci-debug.txt if exists
-        run: |
-          if [ -f "allure-results/ci-debug.txt" ]; then
-            cat allure-results/ci-debug.txt
-          else
-            echo "ci-debug.txt not found"
-          fi
-
-      # --- Allure Integration ---
       - name: Install Allure CLI
         run: |
           sudo npm install -g allure-commandline
