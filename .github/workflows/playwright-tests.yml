@@ -145,9 +145,16 @@ jobs:
         run: |
           sudo npm install -g allure-commandline
 
-      - name: Generate Allure report
+      - name: Generate Allure report from discovered directory
         run: |
-          allure generate allure-results --clean -o allure-report
+          if [ -s found-allure-results.txt ]; then
+            ALLURE_DIR=$(head -n 1 found-allure-results.txt)
+            echo "Generating Allure report from $ALLURE_DIR"
+            allure generate "$ALLURE_DIR" --clean -o allure-report
+          else
+            echo "No allure-results directory found, skipping report generation."
+            exit 1
+          fi
 
       - name: Upload all found allure-results directories
         if: always()
