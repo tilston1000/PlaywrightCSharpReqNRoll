@@ -22,6 +22,9 @@ jobs:
         with:
           dotnet-version: '9.0.x'
 
+      - name: Remove bin and obj folders
+        run: rm -rf bin obj
+
       - name: 📦 Restore dependencies
         run: dotnet restore
 
@@ -30,6 +33,24 @@ jobs:
 
       - name: 🏗️ Build project
         run: dotnet build playwrightreqnroll.csproj --no-restore --runtime linux-x64
+
+      - name: List build output before Playwright install
+        run: ls -lR bin/Debug/net9.0/
+
+      - name: Check for Microsoft.Bcl.AsyncInterfaces.dll
+        run: |
+          echo "Searching for Microsoft.Bcl.AsyncInterfaces.dll in all output directories..."
+          found=0
+          for dir in bin/Debug/net9.0 bin/Debug/net9.0/linux-x64 bin/Debug/net9.0/win-x64 bin/Debug/net9.0/osx-x64; do
+            if [ -f "$dir/Microsoft.Bcl.AsyncInterfaces.dll" ]; then
+              echo "Found: $dir/Microsoft.Bcl.AsyncInterfaces.dll"
+              found=1
+            fi
+          done
+          if [ $found -eq 0 ]; then
+            echo "WARNING: Microsoft.Bcl.AsyncInterfaces.dll NOT FOUND in any output directory!"
+            exit 1
+          fi
 
       # Playwright install must come after build so it can find the assemblies
       - name: 🌐 Install Playwright browsers
