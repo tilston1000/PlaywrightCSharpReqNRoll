@@ -58,7 +58,10 @@
       <ItemGroup>
         <BclAsyncInterfacesDll Include="$(NuGetPackageRoot)microsoft.bcl.asyncinterfaces/9.0.6/lib/netstandard2.0/Microsoft.Bcl.AsyncInterfaces.dll" Condition="Exists('$(NuGetPackageRoot)microsoft.bcl.asyncinterfaces/9.0.6/lib/netstandard2.0/Microsoft.Bcl.AsyncInterfaces.dll')" />
       </ItemGroup>
-      <Copy SourceFiles="@(BclAsyncInterfacesDll)" DestinationFolder="$(OutDir)" SkipUnchangedFiles="true" Condition="@(BclAsyncInterfacesDll-&gt;Count()) &gt; 0" />
+      <Copy SourceFiles="@(BclAsyncInterfacesDll)" DestinationFolder="$(OutDir)" SkipUnchangedFiles="true" Condition="@(BclAsyncInterfacesDll->Count()) > 0" />
+      <Copy SourceFiles="@(BclAsyncInterfacesDll)" DestinationFolder="$(OutDir)linux-x64" SkipUnchangedFiles="true" Condition="Exists('$(OutDir)linux-x64') and @(BclAsyncInterfacesDll->Count()) > 0" />
+      <Copy SourceFiles="@(BclAsyncInterfacesDll)" DestinationFolder="$(OutDir)win-x64" SkipUnchangedFiles="true" Condition="Exists('$(OutDir)win-x64') and @(BclAsyncInterfacesDll->Count()) > 0" />
+      <Copy SourceFiles="@(BclAsyncInterfacesDll)" DestinationFolder="$(OutDir)osx-x64" SkipUnchangedFiles="true" Condition="Exists('$(OutDir)osx-x64') and @(BclAsyncInterfacesDll->Count()) > 0" />
     </Target>
 
 </Project>
