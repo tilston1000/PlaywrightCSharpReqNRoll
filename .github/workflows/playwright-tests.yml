@@ -29,14 +29,13 @@ jobs:
         run: dotnet clean --verbosity normal
 
       - name: 🏗️ Build project
-        run: dotnet build playwrightreqnroll.csproj --no-restore --runtime linux-x64
+        run: dotnet build playwrightreqnroll.csproj --no-restore
 
       # Playwright install must come after build so it can find the assemblies
       - name: 🌐 Install Playwright browsers
         run: |
           dotnet tool install --global Microsoft.Playwright.CLI
           playwright install
-        working-directory: ${{ github.workspace }}
 
       - name: 🧪 Run tests
         run: dotnet test --logger "trx;LogFileName=test-results.trx" --verbosity normal --diag:diag.log
