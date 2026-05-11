@@ -41,7 +41,7 @@ jobs:
         working-directory: ${{ github.workspace }}
 
       - name: 🧪 Run tests
-        run: dotnet test --logger "trx;LogFileName=test-results.trx" --verbosity normal --diag:diag.log
+        run: dotnet test --verbosity normal
         working-directory: ${{ github.workspace }}
         env:
           HEADLESS: true
