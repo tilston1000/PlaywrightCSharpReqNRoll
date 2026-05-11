@@ -48,8 +48,8 @@ jobs:
           echo "Searching for Microsoft.Bcl.AsyncInterfaces.dll"
           find bin/Debug/net9.0/ -name 'Microsoft.Bcl.AsyncInterfaces.dll' || echo "AsyncInterfaces DLL not found"
 
-        - name: Print ALLURE_RESULTS_DIRECTORY
-          run: echo "ALLURE_RESULTS_DIRECTORY=$ALLURE_RESULTS_DIRECTORY"
+      - name: Print ALLURE_RESULTS_DIRECTORY
+        run: echo "ALLURE_RESULTS_DIRECTORY=$ALLURE_RESULTS_DIRECTORY"
 
       - name: Show Microsoft.Bcl.AsyncInterfaces.dll version
         run: |
