@@ -156,13 +156,20 @@ jobs:
             exit 1
           fi
 
-      - name: Upload all found allure-results directories
+
+      - name: Copy found allure-results to workspace root
+        if: always()
+        run: |
+          if [ -s found-allure-results.txt ]; then
+            cp -r "$(head -n 1 found-allure-results.txt)" ./allure-results
+          fi
+
+      - name: Upload Allure results
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: allure-results
-          path: |
-            $(find . -type d -name allure-results | paste -sd ' ' -)
+          path: allure-results/
           if-no-files-found: warn
           compression-level: 6
           overwrite: false
