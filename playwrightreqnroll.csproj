@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
-    <RuntimeIdentifier>linux-x64</RuntimeIdentifier>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
     <LangVersion>latest</LangVersion>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
@@ -56,9 +56,9 @@
     <!-- Ensure Microsoft.Bcl.AsyncInterfaces.dll is copied to output for all platforms -->
     <Target Name="CopyBclAsyncInterfaces" AfterTargets="Build">
       <ItemGroup>
-        <BclAsyncInterfacesDll Include="$(UserProfile)/.nuget/packages/microsoft.bcl.asyncinterfaces/9.0.6/lib/netstandard2.0/Microsoft.Bcl.AsyncInterfaces.dll" Condition="Exists('$(UserProfile)/.nuget/packages/microsoft.bcl.asyncinterfaces/9.0.6/lib/netstandard2.0/Microsoft.Bcl.AsyncInterfaces.dll')" />
+        <BclAsyncInterfacesDll Include="$(NuGetPackageRoot)microsoft.bcl.asyncinterfaces/9.0.6/lib/netstandard2.0/Microsoft.Bcl.AsyncInterfaces.dll" Condition="Exists('$(NuGetPackageRoot)microsoft.bcl.asyncinterfaces/9.0.6/lib/netstandard2.0/Microsoft.Bcl.AsyncInterfaces.dll')" />
       </ItemGroup>
-      <Copy SourceFiles="@(BclAsyncInterfacesDll)" DestinationFolder="$(OutDir)" SkipUnchangedFiles="true" Condition="@(BclAsyncInterfacesDll->Count()) &gt; 0" />
+      <Copy SourceFiles="@(BclAsyncInterfacesDll)" DestinationFolder="$(OutDir)" SkipUnchangedFiles="true" Condition="@(BclAsyncInterfacesDll-&gt;Count()) &gt; 0" />
     </Target>
 
 </Project>
