@@ -678,3 +678,4 @@ C:\source\Training\Playwright\playwrightreqnroll\obj\Debug\net9.0\refint\playwri
 C:\source\Training\Playwright\playwrightreqnroll\obj\Debug\net9.0\playwrightreqnroll.pdb
 C:\source\Training\Playwright\playwrightreqnroll\obj\Debug\net9.0\playwrightreqnroll.genruntimeconfig.cache
 C:\source\Training\Playwright\playwrightreqnroll\obj\Debug\net9.0\ref\playwrightreqnroll.dll
+C:\source\Training\Playwright\playwrightreqnroll\bin\Debug\net9.0\.playwright\node\linux-x64\node
