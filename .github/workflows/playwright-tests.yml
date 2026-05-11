@@ -10,7 +10,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     env:
-      ALLURE_RESULTS_DIRECTORY: ${{ github.workspace }}/allure-results
+      ALLURE_RESULTS_DIRECTORY: allure-results
       ALLURE_LOG_LEVEL: debug
 
     steps:
