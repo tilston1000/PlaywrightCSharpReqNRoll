@@ -3,27 +3,7 @@ using Reqnroll;
 
 namespace playwrightreqnroll.Hooks
 {
-    // Minimal hook to confirm allure-results directory creation in CI
-    [Binding]
-    public class AllureDiagnostics
-    {
-        [BeforeTestRun]
-        public static void EnsureAllureResultsDirectory()
-        {
-            try
-            {
-                var dir = Environment.GetEnvironmentVariable("ALLURE_RESULTS_DIRECTORY") ?? "allure-results";
-                // Always use relative path for allure-results
-                dir = "allure-results";
-                Directory.CreateDirectory(dir);
-                File.WriteAllText(Path.Combine(dir, "ci-debug.txt"), $"Created by EnsureAllureResultsDirectory at {DateTime.UtcNow:O}");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"[AllureDiagnostics] Could not create allure-results directory: {ex}");
-            }
-        }
-    }
+
 
     [Binding]
     public class AllureHook
@@ -78,7 +58,6 @@ namespace playwrightreqnroll.Hooks
                     Console.WriteLine($"[AllureHook] Video not found: {videoPath}");
                 }
             }
-            // Allure.Reqnroll adapter manages the test lifecycle. Manual StopTestCase/WriteTestCase removed.
         }
 
         private static (string displayName, string exampleValues) GetDisplayNameAndExampleValues(ScenarioContext context)
