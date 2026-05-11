@@ -22,6 +22,9 @@ jobs:
         with:
           dotnet-version: '9.0.x'
 
+      - name: Remove bin and obj folders
+        run: rm -rf bin obj
+
       - name: 📦 Restore dependencies
         run: dotnet restore
 
@@ -29,13 +32,60 @@ jobs:
         run: dotnet clean --verbosity normal
 
       - name: 🏗️ Build project
-        run: dotnet build playwrightreqnroll.csproj --no-restore
+        run: dotnet build playwrightreqnroll.csproj --no-restore --runtime linux-x64
+
+      - name: List build output before Playwright install
+        run: ls -lR bin/Debug/net9.0/
+
+      - name: Check for Microsoft.Bcl.AsyncInterfaces.dll
+        run: |
+          echo "Searching for Microsoft.Bcl.AsyncInterfaces.dll in all output directories..."
+          found=0
+          for dir in bin/Debug/net9.0 bin/Debug/net9.0/linux-x64 bin/Debug/net9.0/win-x64 bin/Debug/net9.0/osx-x64; do
+            if [ -f "$dir/Microsoft.Bcl.AsyncInterfaces.dll" ]; then
+              echo "Found: $dir/Microsoft.Bcl.AsyncInterfaces.dll"
+              found=1
+            fi
+          done
+          if [ $found -eq 0 ]; then
+            echo "WARNING: Microsoft.Bcl.AsyncInterfaces.dll NOT FOUND in any output directory!"
+            exit 1
+          fi
 
       # Playwright install must come after build so it can find the assemblies
       - name: 🌐 Install Playwright browsers
         run: |
           dotnet tool install --global Microsoft.Playwright.CLI
           playwright install
+        working-directory: ${{ github.workspace }}
+
+      - name: List output directory for Allure plugin (all platforms)
+        run: |
+          echo "Listing bin/Debug/net9.0/ and bin/Debug/net9.0/linux-x64/"
+          ls -l bin/Debug/net9.0/ || echo "bin/Debug/net9.0/ not found"
+          ls -l bin/Debug/net9.0/linux-x64/ || echo "bin/Debug/net9.0/linux-x64/ not found"
+          echo "Searching for Allure.ReqnrollPlugin.dll in all subdirs"
+          find bin/Debug/net9.0/ -name 'Allure.ReqnrollPlugin.dll' || echo "Plugin DLL not found"
+
+      - name: List output directory for AsyncInterfaces (all platforms)
+        run: |
+          echo "Searching for Microsoft.Bcl.AsyncInterfaces.dll in all subdirs"
+          find bin/Debug/net9.0/ -name 'Microsoft.Bcl.AsyncInterfaces.dll' || echo "AsyncInterfaces DLL not found"
+
+      - name: Print ALLURE_RESULTS_DIRECTORY
+        run: echo "ALLURE_RESULTS_DIRECTORY=$ALLURE_RESULTS_DIRECTORY"
+
+      - name: Show Microsoft.Bcl.AsyncInterfaces.dll version (all platforms)
+        run: |
+          for dll in bin/Debug/net9.0/Microsoft.Bcl.AsyncInterfaces.dll bin/Debug/net9.0/linux-x64/Microsoft.Bcl.AsyncInterfaces.dll; do
+            if [ -f "$dll" ]; then
+              echo "DLL found: $dll"
+              file "$dll"
+              strings "$dll" | grep -E 'Microsoft.Bcl.AsyncInterfaces, Version=' || echo "Version string not found"
+            else
+              echo "DLL not found at $dll"
+            fi
+          done
 
       - name: 🧪 Run tests
         run: dotnet test --logger "trx;LogFileName=test-results.trx" --verbosity normal --diag:diag.log
@@ -56,19 +106,61 @@ jobs:
           overwrite: false
           include-hidden-files: false
 
+      - name: Print working directory
+        run: pwd
+
+      - name: Print environment variables
+        run: printenv | sort
+
+      - name: List files before test run
+        run: ls -l
+
+      - name: List workspace files
+        run: ls -l
+
+      - name: Find and list all allure-results directories after test
+        run: |
+          echo "Searching for all allure-results directories in workspace..."
+          find . -type d -name allure-results | tee found-allure-results.txt
+          if [ -s found-allure-results.txt ]; then
+            while IFS= read -r dir; do
+              echo "Listing: $dir"
+              ls -l "$dir"
+              find "$dir" -type f
+            done < found-allure-results.txt
+          else
+            echo "No allure-results directory found anywhere in workspace!"
+          fi
+
+      - name: Print ci-debug.txt if exists
+        run: |
+          if [ -f "allure-results/ci-debug.txt" ]; then
+            cat allure-results/ci-debug.txt
+          else
+            echo "ci-debug.txt not found"
+          fi
+
       # --- Allure Integration ---
       - name: Install Allure CLI
         run: |
           sudo npm install -g allure-commandline
 
-      - name: Generate Allure report
+      - name: Generate Allure report from discovered directory
         run: |
-          if [ -d allure-results ]; then
-            echo "Generating Allure report from allure-results"
-            allure generate allure-results --clean -o allure-report
+          if [ -s found-allure-results.txt ]; then
+            ALLURE_DIR=$(head -n 1 found-allure-results.txt)
+            echo "Generating Allure report from $ALLURE_DIR"
+            allure generate "$ALLURE_DIR" --clean -o allure-report
           else
             echo "No allure-results directory found, skipping report generation."
             exit 1
+          fi
+
+      - name: Copy found allure-results to workspace root
+        if: always()
+        run: |
+          if [ -s found-allure-results.txt ]; then
+            cp -r "$(head -n 1 found-allure-results.txt)" ./allure-results
           fi
 
       - name: Upload Allure results
