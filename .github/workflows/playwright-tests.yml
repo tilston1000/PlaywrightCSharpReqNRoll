@@ -49,20 +49,11 @@ jobs:
             exit 1
           fi
 
-      # Playwright install must come after build so it can find the assemblies
       - name: 🌐 Install Playwright browsers
         run: |
           dotnet tool install --global Microsoft.Playwright.CLI
           playwright install
         working-directory: ${{ github.workspace }}
-
-      - name: List output directory for Allure plugin (all platforms)
-        run: |
-          echo "Listing bin/Debug/net9.0/ and bin/Debug/net9.0/linux-x64/"
-          ls -l bin/Debug/net9.0/ || echo "bin/Debug/net9.0/ not found"
-          ls -l bin/Debug/net9.0/linux-x64/ || echo "bin/Debug/net9.0/linux-x64/ not found"
-          echo "Searching for Allure.ReqnrollPlugin.dll in all subdirs"
-          find bin/Debug/net9.0/ -name 'Allure.ReqnrollPlugin.dll' || echo "Plugin DLL not found"
 
       - name: 🧪 Run tests
         run: dotnet test --logger "trx;LogFileName=test-results.trx" --verbosity normal --diag:diag.log
