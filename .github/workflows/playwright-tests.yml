@@ -29,13 +29,17 @@ jobs:
         run: dotnet clean --verbosity normal
 
       - name: 🏗️ Build project
-        run: dotnet build --no-restore
+        run: dotnet build --no-restore --runtime linux-x64
+
+      - name: List build output before Playwright install
+        run: ls -lR bin/Debug/net9.0/
 
       # Playwright install must come after build so it can find the assemblies
       - name: 🌐 Install Playwright browsers
         run: |
           dotnet tool install --global Microsoft.Playwright.CLI
           playwright install
+        working-directory: ${{ github.workspace }}
 
       - name: List output directory for Allure plugin
         run: |
