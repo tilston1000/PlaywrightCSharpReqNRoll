@@ -41,31 +41,34 @@ jobs:
           playwright install
         working-directory: ${{ github.workspace }}
 
-      - name: List output directory for Allure plugin
+
+      - name: List output directory for Allure plugin (all platforms)
         run: |
-          echo "Listing bin/Debug/net9.0/"
-          ls -l bin/Debug/net9.0/
-          echo "Searching for Allure.ReqnrollPlugin.dll"
+          echo "Listing bin/Debug/net9.0/ and bin/Debug/net9.0/linux-x64/"
+          ls -l bin/Debug/net9.0/ || echo "bin/Debug/net9.0/ not found"
+          ls -l bin/Debug/net9.0/linux-x64/ || echo "bin/Debug/net9.0/linux-x64/ not found"
+          echo "Searching for Allure.ReqnrollPlugin.dll in all subdirs"
           find bin/Debug/net9.0/ -name 'Allure.ReqnrollPlugin.dll' || echo "Plugin DLL not found"
 
-      - name: List output directory for AsyncInterfaces
+      - name: List output directory for AsyncInterfaces (all platforms)
         run: |
-          echo "Searching for Microsoft.Bcl.AsyncInterfaces.dll"
+          echo "Searching for Microsoft.Bcl.AsyncInterfaces.dll in all subdirs"
           find bin/Debug/net9.0/ -name 'Microsoft.Bcl.AsyncInterfaces.dll' || echo "AsyncInterfaces DLL not found"
 
       - name: Print ALLURE_RESULTS_DIRECTORY
         run: echo "ALLURE_RESULTS_DIRECTORY=$ALLURE_RESULTS_DIRECTORY"
 
-      - name: Show Microsoft.Bcl.AsyncInterfaces.dll version
+      - name: Show Microsoft.Bcl.AsyncInterfaces.dll version (all platforms)
         run: |
-          dll="bin/Debug/net9.0/Microsoft.Bcl.AsyncInterfaces.dll"
-          if [ -f "$dll" ]; then
-            echo "DLL found: $dll"
-            file "$dll"
-            strings "$dll" | grep -E 'Microsoft.Bcl.AsyncInterfaces, Version=' || echo "Version string not found"
-          else
-            echo "DLL not found"
-          fi
+          for dll in bin/Debug/net9.0/Microsoft.Bcl.AsyncInterfaces.dll bin/Debug/net9.0/linux-x64/Microsoft.Bcl.AsyncInterfaces.dll; do
+            if [ -f "$dll" ]; then
+              echo "DLL found: $dll"
+              file "$dll"
+              strings "$dll" | grep -E 'Microsoft.Bcl.AsyncInterfaces, Version=' || echo "Version string not found"
+            else
+              echo "DLL not found at $dll"
+            fi
+          done
 
       - name: 🧪 Run tests
         run: dotnet test --logger "trx;LogFileName=test-results.trx" --verbosity normal --diag:diag.log
