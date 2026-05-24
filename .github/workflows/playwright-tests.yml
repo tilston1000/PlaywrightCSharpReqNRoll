@@ -87,17 +87,15 @@ jobs:
 
       - name: Upload Allure results
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v3
         with:
           name: allure-results
           path: allure-results/
           if-no-files-found: warn
-          compression-level: 6
-          overwrite: false
           include-hidden-files: false
 
       - name: Upload Allure report
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v3
         with:
           name: allure-report
           path: allure-report/
