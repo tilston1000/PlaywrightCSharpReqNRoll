@@ -49,6 +49,10 @@ jobs:
           TEST_PASSWORD: ${{ secrets.TEST_PASSWORD }}
 
       # --- Allure Integration ---
+      - name: Locate allure-results directories after test
+        run: |
+          find . -type d -name allure-results | tee found-allure-results.txt
+
       - name: Install Allure CLI
         run: |
           sudo npm install -g allure-commandline
