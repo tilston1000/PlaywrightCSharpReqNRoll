@@ -29,6 +29,19 @@ jobs:
       - name: Run tests in Docker
         run: docker run --rm -v ${{ github.workspace }}:/app playwrightreqnroll
 
+      - name: List workspace files after test
+        run: |
+          echo "Listing workspace root after test run:"
+          ls -l ${{ github.workspace }}
+          echo "Listing allure-results directory:"
+          ls -l ${{ github.workspace }}/allure-results || echo "allure-results not found"
+
+      - name: Upload Allure results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-results
+          path: allure-results/
       - name: Upload Allure report
         if: always()
         uses: actions/upload-artifact@v4

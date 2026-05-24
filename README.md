@@ -8,6 +8,12 @@ This project contains automated UI tests using .NET, Playwright, Reqnroll, and A
 - Node.js (for Playwright)
 - Playwright CLI (`dotnet tool install --global Microsoft.Playwright.CLI`)
 - Allure CLI (see https://docs.qameta.io/allure/)
+- `reqnroll.json` in the project root to enable the Allure plugin:
+  ```json
+  {
+    "plugins": ["Allure.ReqnrollPlugin"]
+  }
+  ```
 
 ## Project Structure
 
@@ -21,12 +27,13 @@ This project contains automated UI tests using .NET, Playwright, Reqnroll, and A
 ## Running Tests Locally
 
 1. Install prerequisites (see above).
-2. Open a PowerShell terminal in the project root.
-3. Run:
+2. Ensure `reqnroll.json` is present in the project root (see above).
+3. Open a PowerShell terminal in the project root.
+4. Run:
    ```
    ./run-tests.ps1
    ```
-4. The script will build, run smoke tests, and open the Allure report in your browser.
+5. The script will build, run smoke tests, and open the Allure report in your browser.
 
 ## Running Tests in GitHub Actions
 
@@ -37,6 +44,8 @@ Tests are automatically run in CI using GitHub Actions. Here’s what happens:
    - Checks out the code.
    - Sets up Docker Buildx for building images.
    - Builds the Docker image for the test environment.
+     - **Note:** The Dockerfile now copies all source and config files (including `appsettings.json`) before running `dotnet build` and `playwright install`. This ensures all required files are present for a successful build and browser installation.
+     - `dotnet build` must run before `playwright install` to satisfy Playwright CLI requirements.
    - Scans the Docker image for vulnerabilities using Trivy.
    - Runs the tests inside the Docker container.
    - Uploads the Allure report as a workflow artifact.
@@ -47,6 +56,7 @@ No manual action is needed—just push your code or open a pull request, and the
 ## Allure Reporting
 
 - Screenshots and videos are attached to failed scenarios via the `AllureHook`.
+- The Allure plugin is enabled via `reqnroll.json` (not `allureConfig.json`).
 - To view the report locally, run `allure open allure-report` after test execution.
 
 ## Security
