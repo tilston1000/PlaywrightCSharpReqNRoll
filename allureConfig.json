@@ -1,0 +1,8 @@
+{
+  "allure": {
+    "directory": "allure-results",
+    "cleanResultsDirectory": true,
+    "enable": true,
+    "loggingLevel": "INFO"
+  }
+}

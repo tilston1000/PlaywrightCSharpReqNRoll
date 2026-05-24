@@ -54,14 +54,9 @@
         "net9.0": {
           "targetAlias": "net9.0",
           "dependencies": {
-            "Allure.Commons": {
+            "Allure.Reqnroll": {
               "target": "Package",
-              "version": "[2.13.10, )",
-              "versionCentrallyManaged": true
-            },
-            "Allure.NUnit": {
-              "target": "Package",
-              "version": "[2.13.10, )",
+              "version": "[2.15.0, )",
               "versionCentrallyManaged": true
             },
             "DotNetEnv": {
@@ -131,8 +126,7 @@
             }
           },
           "centralPackageVersions": {
-            "Allure.Commons": "2.13.10",
-            "Allure.NUnit": "2.13.10",
+            "Allure.Reqnroll": "2.15.0",
             "coverlet.collector": "3.2.0",
             "DotNetEnv": "2.5.0",
             "FluentAssertions": "7.0.0",

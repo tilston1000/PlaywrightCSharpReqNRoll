@@ -6,44 +6,75 @@ public static class AllureHelpers
 {
     public static async Task RunAllureStep(string name, Func<Task> action)
     {
-        var stepResult = new StepResult { name = name };
-        bool stepStarted = false;
+        var stepStarted = false;
         try
         {
             try
             {
-                AllureLifecycle.Instance.StartStep(stepResult);
                 stepStarted = true;
+                AllureLifecycle.Instance.StartStep(new StepResult { name = name });
             }
-            catch (InvalidOperationException)
+            catch (Exception startEx)
             {
-                await action();
-                return;
+                Console.WriteLine($"[AllureHelpers] Failed to start Allure step: {startEx.Message}");
+                throw;
             }
-
-            try
-            {
-                await action();
+            await action();
+            if (stepStarted)
                 AllureLifecycle.Instance.UpdateStep(x => x.status = Status.passed);
-            }
-            catch (Exception ex)
+        }
+        catch (Exception ex)
+        {
+            if (stepStarted)
             {
                 AllureLifecycle.Instance.UpdateStep(x =>
                 {
                     x.status = Status.failed;
                     x.statusDetails = new StatusDetails { message = ex.Message };
                 });
-                throw;
             }
-            finally
-            {
-                if (stepStarted)
-                    AllureLifecycle.Instance.StopStep();
-            }
-        }
-        catch
-        {
             throw;
         }
+        finally
+        {
+            if (stepStarted)
+            {
+                try
+                {
+                    AllureLifecycle.Instance.StopStep();
+                }
+                catch (Exception stopEx)
+                {
+                    Console.WriteLine($"[AllureHelpers] Failed to stop Allure step: {stopEx.Message}");
+                }
+            }
+        }
+    }
+
+    // Helper to get the current parent step UUID from Allure's context (if any)
+    private static string? GetCurrentAllureStepUuid()
+    {
+        try
+        {
+            var storageField = typeof(AllureLifecycle).GetField("_storage", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            if (storageField != null)
+            {
+                var storage = storageField.GetValue(AllureLifecycle.Instance);
+                if (storage != null)
+                {
+                    var stepStackField = storage.GetType().GetField("_stepContext", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+                    if (stepStackField != null)
+                    {
+                        var stepStack = stepStackField.GetValue(storage) as System.Collections.Generic.Stack<string>;
+                        if (stepStack != null && stepStack.Count > 0)
+                        {
+                            return stepStack.Peek();
+                        }
+                    }
+                }
+            }
+        }
+        catch { /* Reflection may fail, just return null */ }
+        return null;
     }
 }
