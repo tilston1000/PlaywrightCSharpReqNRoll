@@ -79,6 +79,11 @@
               "version": "[3.1.2, )",
               "versionCentrallyManaged": true
             },
+            "Microsoft.Bcl.AsyncInterfaces": {
+              "target": "Package",
+              "version": "[9.0.6, )",
+              "versionCentrallyManaged": true
+            },
             "Microsoft.Extensions.Configuration": {
               "target": "Package",
               "version": "[9.0.0, )",
@@ -130,6 +135,7 @@
             "coverlet.collector": "3.2.0",
             "DotNetEnv": "2.5.0",
             "FluentAssertions": "7.0.0",
+            "Microsoft.Bcl.AsyncInterfaces": "9.0.6",
             "Microsoft.Extensions.Configuration": "9.0.0",
             "Microsoft.Extensions.Configuration.Binder": "9.0.0",
             "Microsoft.Extensions.Configuration.FileExtensions": "9.0.0",
