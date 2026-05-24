@@ -26,8 +26,8 @@ jobs:
       - name: Ensure entrypoint.sh is executable
         run: chmod +x entrypoint.sh
 
-      - name: Run tests in Docker
-        run: docker run --rm -e ALLURE_RESULTS_DIRECTORY=/app/allure-results -v ${{ github.workspace }}:/app playwrightreqnroll
+      - name: Run tests in Docker (as root)
+        run: docker run --rm --user root -e ALLURE_RESULTS_DIRECTORY=/app/allure-results -v ${{ github.workspace }}:/app playwrightreqnroll
 
       - name: List workspace files after test
         run: |
