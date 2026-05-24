@@ -23,6 +23,9 @@ jobs:
       - name: Build Docker image
         run: docker build -t playwrightreqnroll .
 
+      - name: Ensure entrypoint.sh is executable
+        run: chmod +x entrypoint.sh
+
       - name: Run tests in Docker
         run: docker run --rm -v ${{ github.workspace }}:/app playwrightreqnroll
 
