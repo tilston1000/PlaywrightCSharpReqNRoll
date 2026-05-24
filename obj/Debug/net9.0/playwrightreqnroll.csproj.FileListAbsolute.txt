@@ -511,3 +511,4 @@ C:\source\Training\Playwright\playwrightreqnroll\bin\Debug\net9.0\Allure.Net.Com
 C:\source\Training\Playwright\playwrightreqnroll\bin\Debug\net9.0\Allure.ReqnrollPlugin.dll
 C:\source\Training\Playwright\playwrightreqnroll\bin\Debug\net9.0\AspectInjector.Broker.dll
 C:\source\Training\Playwright\playwrightreqnroll\bin\Debug\net9.0\CsvHelper.dll
+C:\source\Training\Playwright\playwrightreqnroll\bin\Debug\net9.0\reqnroll.json

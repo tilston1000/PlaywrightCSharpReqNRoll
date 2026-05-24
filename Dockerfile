@@ -38,9 +38,11 @@ RUN find / -name NuGet.Config -print || true
 # Restore NuGet packages (this layer will be cached unless dependency files change)
 RUN dotnet restore --configfile nuget.config
 
-# Install Playwright CLI and browsers (cache this layer unless dependencies change)
-RUN dotnet tool install --global Microsoft.Playwright.CLI && \
-    playwright install
+
+
+# Install Playwright CLI (browsers will be installed after all files are copied)
+RUN dotnet tool install --global Microsoft.Playwright.CLI
+
 
 # Now copy the rest of the source and config files
 COPY Config ./Config
@@ -52,6 +54,10 @@ COPY Pages ./Pages
 COPY StepDefinitions ./StepDefinitions
 COPY appsettings.json ./
 COPY entrypoint.sh ./
+
+# Build the project and install Playwright browsers (now all files are present)
+RUN dotnet build
+RUN playwright install
 
 # Publish the project
 RUN dotnet publish --no-restore --output ./publish --configfile nuget.config
