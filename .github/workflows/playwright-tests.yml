@@ -14,77 +14,28 @@ jobs:
       ALLURE_LOG_LEVEL: debug
 
     steps:
-      - name: ⬇️ Checkout repo
+      - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: 🧰 Setup .NET
-        uses: actions/setup-dotnet@v4
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Docker image
+        run: docker build -t playwrightreqnroll .
+
+      - name: Scan Docker image for vulnerabilities
+        uses: aquasecurity/trivy-action@v0.36.0
         with:
-          dotnet-version: '9.0.x'
+          image-ref: playwrightreqnroll
+          format: table
+          exit-code: 1
+          ignore-unfixed: true
 
-      - name: Remove bin and obj folders
-        run: rm -rf bin obj
-
-      - name: 📦 Restore dependencies
-        run: dotnet restore
-
-      - name: Clean build output
-        run: dotnet clean --verbosity normal
-
-      - name: 🏗️ Build project
-        run: dotnet build playwrightreqnroll.csproj --no-restore --runtime linux-x64
-
-      - name: 🌐 Install Playwright browsers
-        run: |
-          dotnet tool install --global Microsoft.Playwright.CLI
-          playwright install
-        working-directory: ${{ github.workspace }}
-
-      - name: 🧪 Run tests
-        run: dotnet test --verbosity normal
-        working-directory: ${{ github.workspace }}
-        env:
-          HEADLESS: true
-          TEST_USERNAME: ${{ secrets.TEST_USERNAME }}
-          TEST_PASSWORD: ${{ secrets.TEST_PASSWORD }}
-
-      # --- Allure Integration ---
-      - name: Locate allure-results directories after test
-        run: |
-          find . -type d -name allure-results | tee found-allure-results.txt
-
-      - name: Install Allure CLI
-        run: |
-          sudo npm install -g allure-commandline
-
-      - name: Generate Allure report from discovered directory
-        run: |
-          if [ -s found-allure-results.txt ]; then
-            ALLURE_DIR=$(head -n 1 found-allure-results.txt)
-            echo "Generating Allure report from $ALLURE_DIR"
-            allure generate "$ALLURE_DIR" --clean -o allure-report
-          else
-            echo "No allure-results directory found, skipping report generation."
-            exit 1
-          fi
-
-      - name: Copy found allure-results to workspace root
-        if: always()
-        run: |
-          if [ -s found-allure-results.txt ]; then
-            cp -r "$(head -n 1 found-allure-results.txt)" ./allure-results
-          fi
-
-      - name: Upload Allure results
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: allure-results
-          path: allure-results/
-          if-no-files-found: warn
-          include-hidden-files: false
+      - name: Run tests in Docker
+        run: docker run --rm -v ${{ github.workspace }}:/app playwrightreqnroll
 
       - name: Upload Allure report
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: allure-report
