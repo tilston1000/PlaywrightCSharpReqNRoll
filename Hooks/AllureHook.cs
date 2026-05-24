@@ -15,7 +15,7 @@ namespace playwrightreqnroll.Hooks
         }
 
         [AfterScenario(Order = 1)]
-        public void GenerateVideo()
+        public void GenerateVideoAndAllureDiagnostics()
         {
             // Attach Playwright screenshot if available
             if (_scenarioContext.ContainsKey("PlaywrightScreenshotPath"))
@@ -55,6 +55,30 @@ namespace playwrightreqnroll.Hooks
                 {
                     Console.WriteLine($"[AllureHook] Video not found: {videoPath}");
                 }
+            }
+
+            // Allure diagnostics: print loaded plugin info and allure-results contents
+            try
+            {
+                Console.WriteLine($"[AllureHook][DIAG] AllureLifecycle.Instance: {AllureLifecycle.Instance}");
+                var allureResultsDir = "/app/allure-results";
+                if (Directory.Exists(allureResultsDir))
+                {
+                    var files = Directory.GetFiles(allureResultsDir);
+                    Console.WriteLine($"[AllureHook][DIAG] allure-results contains {files.Length} files after scenario.");
+                    foreach (var file in files)
+                    {
+                        Console.WriteLine($"[AllureHook][DIAG] allure-results file: {file}");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine($"[AllureHook][DIAG] allure-results directory does not exist after scenario.");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[AllureHook][DIAG] Error printing allure-results diagnostics: {ex.Message}");
             }
         }
 
