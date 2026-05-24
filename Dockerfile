@@ -14,9 +14,7 @@ WORKDIR /app
 COPY *.csproj ./
 COPY *.sln ./
 
-# Install Playwright CLI and browsers
-RUN dotnet tool install --global Microsoft.Playwright.CLI && \
-    /root/.dotnet/tools/playwright install
+
 
 # Install Allure CLI globally
 RUN npm install -g allure-commandline
@@ -24,14 +22,18 @@ RUN npm install -g allure-commandline
 # Add .NET tools to PATH
 ENV PATH="$PATH:/root/.dotnet/tools"
 
-# Restore dependencies (uses cache if csproj/sln unchanged)
+
 RUN dotnet restore
 
 # Copy the rest of the source code
 COPY . .
 
-# Build the project
+
 RUN dotnet build --no-restore
+
+# Install Playwright CLI and browsers after build (ensures Microsoft.Playwright is present)
+RUN dotnet tool install --global Microsoft.Playwright.CLI && \
+    /root/.dotnet/tools/playwright install
 
 # Copy entrypoint script
 COPY entrypoint.sh /entrypoint.sh
