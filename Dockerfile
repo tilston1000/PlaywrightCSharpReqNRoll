@@ -1,10 +1,11 @@
 FROM mcr.microsoft.com/dotnet/sdk:9.0
 
-# Install Node.js (required for Playwright CLI and Allure CLI) and Allure CLI
+# Install Node.js (required for Playwright CLI and Allure CLI), Java (for Allure), and Allure CLI
 RUN apt-get update && \
     apt-get install -y curl && \
     curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
     apt-get install -y nodejs && \
+    apt-get install -y openjdk-17-jre-headless && \
     apt-get install -y \
         libglib2.0-0 libnss3 libnspr4 libdbus-1-3 libatk1.0-0 libatk-bridge2.0-0 \
         libcups2 libdrm2 libatspi2.0-0 libx11-6 libxcomposite1 libxdamage1 libxext6 \
@@ -20,22 +21,25 @@ ENV NUGET_FALLBACK_PACKAGES=""
 ENV NUGET_PACKAGES=/tmp/nuget
 ENV PATH="$PATH:/root/.dotnet/tools"
 
-# Copy NuGet and solution/project files
+
+# Copy only dependency files first for better Docker cache utilization
 COPY nuget.config ./
-RUN sed -i '/FallbackPackageFolders/d' /app/nuget.config
 COPY Directory.Packages.props ./
 COPY *.csproj ./
 COPY *.sln ./
+
+# Remove any FallbackPackageFolders lines from nuget.config
+RUN sed -i '/FallbackPackageFolders/d' /app/nuget.config
 
 # Clean up global NuGet config and caches
 RUN rm -rf /root/.nuget /usr/share/dotnet/sdk/NuGetFallbackFolder || true
 RUN dotnet nuget locals all --clear
 RUN find / -name NuGet.Config -print || true
 
-# Restore NuGet packages
+# Restore NuGet packages (this layer will be cached unless dependency files change)
 RUN dotnet restore --configfile nuget.config
 
-# Copy source and config files
+# Now copy the rest of the source and config files
 COPY Config ./Config
 COPY Drivers ./Drivers
 COPY Features ./Features
