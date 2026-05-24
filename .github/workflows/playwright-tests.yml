@@ -49,20 +49,6 @@ jobs:
           TEST_PASSWORD: ${{ secrets.TEST_PASSWORD }}
 
       # --- Allure Integration ---
-      - name: Find and list all allure-results directories after test
-        run: |
-          echo "Searching for all allure-results directories in workspace..."
-          find . -type d -name allure-results | tee found-allure-results.txt
-          if [ -s found-allure-results.txt ]; then
-            while IFS= read -r dir; do
-              echo "Listing: $dir"
-              ls -l "$dir"
-              find "$dir" -type f
-            done < found-allure-results.txt
-          else
-            echo "No allure-results directory found anywhere in workspace!"
-          fi
-
       - name: Install Allure CLI
         run: |
           sudo npm install -g allure-commandline
