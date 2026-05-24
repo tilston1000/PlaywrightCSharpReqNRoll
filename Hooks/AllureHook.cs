@@ -15,7 +15,7 @@ namespace playwrightreqnroll.Hooks
         }
 
         [AfterScenario(Order = 1)]
-        public void AfterScenario()
+        public void GenerateVideo()
         {
             // Attach Playwright screenshot if available
             if (_scenarioContext.ContainsKey("PlaywrightScreenshotPath"))
