@@ -315,10 +315,6 @@ C:\source\Training\Playwright\playwrightreqnroll\bin\Debug\net9.0\playwrightreqn
 C:\source\Training\Playwright\playwrightreqnroll\bin\Debug\net9.0\playwrightreqnroll.runtimeconfig.json
 C:\source\Training\Playwright\playwrightreqnroll\bin\Debug\net9.0\playwrightreqnroll.dll
 C:\source\Training\Playwright\playwrightreqnroll\bin\Debug\net9.0\playwrightreqnroll.pdb
-C:\source\Training\Playwright\playwrightreqnroll\bin\Debug\net9.0\Allure.Commons.dll
-C:\source\Training\Playwright\playwrightreqnroll\bin\Debug\net9.0\Allure.Net.Commons.dll
-C:\source\Training\Playwright\playwrightreqnroll\bin\Debug\net9.0\Allure.NUnit.dll
-C:\source\Training\Playwright\playwrightreqnroll\bin\Debug\net9.0\AspectInjector.Broker.dll
 C:\source\Training\Playwright\playwrightreqnroll\bin\Debug\net9.0\CucumberExpressions.dll
 C:\source\Training\Playwright\playwrightreqnroll\bin\Debug\net9.0\Cucumber.HtmlFormatter.dll
 C:\source\Training\Playwright\playwrightreqnroll\bin\Debug\net9.0\Cucumber.Messages.dll
@@ -358,7 +354,6 @@ C:\source\Training\Playwright\playwrightreqnroll\bin\Debug\net9.0\MimeTypesMap.d
 C:\source\Training\Playwright\playwrightreqnroll\bin\Debug\net9.0\Microsoft.VisualStudio.TestPlatform.TestFramework.dll
 C:\source\Training\Playwright\playwrightreqnroll\bin\Debug\net9.0\Newtonsoft.Json.dll
 C:\source\Training\Playwright\playwrightreqnroll\bin\Debug\net9.0\NuGet.Frameworks.dll
-C:\source\Training\Playwright\playwrightreqnroll\bin\Debug\net9.0\nunit.framework.dll
 C:\source\Training\Playwright\playwrightreqnroll\bin\Debug\net9.0\Reqnroll.Utils.dll
 C:\source\Training\Playwright\playwrightreqnroll\bin\Debug\net9.0\Reqnroll.dll
 C:\source\Training\Playwright\playwrightreqnroll\bin\Debug\net9.0\Reqnroll.MSTest.ReqnrollPlugin.dll
@@ -512,3 +507,7 @@ C:\source\Training\Playwright\playwrightreqnroll\obj\Debug\net9.0\refint\playwri
 C:\source\Training\Playwright\playwrightreqnroll\obj\Debug\net9.0\playwrightreqnroll.pdb
 C:\source\Training\Playwright\playwrightreqnroll\obj\Debug\net9.0\playwrightreqnroll.genruntimeconfig.cache
 C:\source\Training\Playwright\playwrightreqnroll\obj\Debug\net9.0\ref\playwrightreqnroll.dll
+C:\source\Training\Playwright\playwrightreqnroll\bin\Debug\net9.0\Allure.Net.Commons.dll
+C:\source\Training\Playwright\playwrightreqnroll\bin\Debug\net9.0\Allure.ReqnrollPlugin.dll
+C:\source\Training\Playwright\playwrightreqnroll\bin\Debug\net9.0\AspectInjector.Broker.dll
+C:\source\Training\Playwright\playwrightreqnroll\bin\Debug\net9.0\CsvHelper.dll

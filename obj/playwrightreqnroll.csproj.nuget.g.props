@@ -14,9 +14,9 @@
     <SourceRoot Include="C:\Program Files (x86)\Microsoft Visual Studio\Shared\NuGetPackages\" />
   </ItemGroup>
   <ItemGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
-    <Content Include="$(NuGetPackageRoot)allure.commons\3.0.0.10\contentFiles\any\netstandard2.0\allureConfig.Template.json" Condition="Exists('$(NuGetPackageRoot)allure.commons\3.0.0.10\contentFiles\any\netstandard2.0\allureConfig.Template.json')">
-      <NuGetPackageId>Allure.Commons</NuGetPackageId>
-      <NuGetPackageVersion>3.0.0.10</NuGetPackageVersion>
+    <Content Include="$(NuGetPackageRoot)allure.reqnroll\2.15.0\contentFiles\any\netstandard2.0\allureConfig.Template.json" Condition="Exists('$(NuGetPackageRoot)allure.reqnroll\2.15.0\contentFiles\any\netstandard2.0\allureConfig.Template.json')">
+      <NuGetPackageId>Allure.Reqnroll</NuGetPackageId>
+      <NuGetPackageVersion>2.15.0</NuGetPackageVersion>
       <NuGetItemType>Content</NuGetItemType>
       <Pack>false</Pack>
       <Private>False</Private>
@@ -34,6 +34,6 @@
     <Import Project="$(NuGetPackageRoot)microsoft.net.test.sdk\17.8.0\build\netcoreapp3.1\Microsoft.NET.Test.Sdk.props" Condition="Exists('$(NuGetPackageRoot)microsoft.net.test.sdk\17.8.0\build\netcoreapp3.1\Microsoft.NET.Test.Sdk.props')" />
   </ImportGroup>
   <PropertyGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
-    <PkgAspectInjector Condition=" '$(PkgAspectInjector)' == '' ">C:\Users\tilst\.nuget\packages\aspectinjector\2.9.0</PkgAspectInjector>
+    <PkgAspectInjector Condition=" '$(PkgAspectInjector)' == '' ">C:\Users\tilst\.nuget\packages\aspectinjector\2.8.1</PkgAspectInjector>
   </PropertyGroup>
 </Project>

@@ -1,5 +1,5 @@
-using Allure.Net.Commons;
 using Reqnroll;
+using Allure.Net.Commons;
 
 namespace playwrightreqnroll.Hooks
 {
@@ -27,8 +27,7 @@ namespace playwrightreqnroll.Hooks
                     AllureApi.AddAttachment(
                         "Failure Screenshot",
                         "image/png",
-                        screenshotBytes,
-                        ".png"
+                        screenshotBytes
                     );
                     Console.WriteLine($"[AllureHook] Screenshot attached: {screenshotPath}");
                 }
@@ -48,8 +47,7 @@ namespace playwrightreqnroll.Hooks
                     AllureApi.AddAttachment(
                         "Test Video",
                         "video/webm",
-                        videoBytes,
-                        ".webm"
+                        videoBytes
                     );
                     Console.WriteLine($"[AllureHook] Video attached: {videoPath}");
                 }
