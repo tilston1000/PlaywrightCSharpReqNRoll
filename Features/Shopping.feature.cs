@@ -50,7 +50,7 @@ namespace playwrightreqnroll.Features
         {
         }
         
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.ClassCleanupAttribute()]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.ClassCleanupAttribute(Microsoft.VisualStudio.TestTools.UnitTesting.ClassCleanupBehavior.EndOfClass)]
         public static async global::System.Threading.Tasks.Task FeatureTearDownAsync()
         {
             await global::Reqnroll.TestRunnerManager.ReleaseFeatureAsync(featureInfo);
@@ -121,7 +121,7 @@ namespace playwrightreqnroll.Features
             return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("Features/Shopping.feature.ndjson", 5);
         }
         
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute(callerLineNumber: 4, DisplayName="Add <product> to cart")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute("Add <product> to cart")]
         [global::Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Add <product> to cart")]
         [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Shopping")]
         [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("smoke")]
@@ -159,7 +159,7 @@ namespace playwrightreqnroll.Features
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute(callerLineNumber: 14, DisplayName="Cart perists after logout and login")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute("Cart perists after logout and login")]
         [global::Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Cart perists after logout and login")]
         [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Shopping")]
         [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("smoke")]

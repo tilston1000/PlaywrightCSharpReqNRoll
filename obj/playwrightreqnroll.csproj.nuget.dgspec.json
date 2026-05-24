@@ -13,10 +13,12 @@
         "packagesPath": "C:\\Users\\tilst\\.nuget\\packages\\",
         "outputPath": "C:\\source\\Training\\Playwright\\playwrightreqnroll\\obj\\",
         "projectStyle": "PackageReference",
+        "centralPackageVersionsManagementEnabled": true,
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
+          "C:\\source\\Training\\Playwright\\playwrightreqnroll\\NuGet.Config",
           "C:\\Users\\tilst\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
@@ -52,78 +54,102 @@
         "net9.0": {
           "targetAlias": "net9.0",
           "dependencies": {
-            "Allure.Net.Commons": {
+            "Allure.Commons": {
               "target": "Package",
-              "version": "[2.14.1, )"
+              "version": "[2.13.10, )",
+              "versionCentrallyManaged": true
             },
-            "Allure.Reqnroll": {
+            "Allure.NUnit": {
               "target": "Package",
-              "version": "[2.14.1, )"
+              "version": "[2.13.10, )",
+              "versionCentrallyManaged": true
             },
             "DotNetEnv": {
               "target": "Package",
-              "version": "[3.1.1, )"
+              "version": "[2.5.0, )",
+              "versionCentrallyManaged": true
             },
             "FluentAssertions": {
               "target": "Package",
-              "version": "[8.9.0, )"
+              "version": "[7.0.0, )",
+              "versionCentrallyManaged": true
             },
             "MSTest.TestAdapter": {
               "target": "Package",
-              "version": "[4.2.1, )"
+              "version": "[3.1.2, )",
+              "versionCentrallyManaged": true
             },
             "MSTest.TestFramework": {
               "target": "Package",
-              "version": "[4.2.1, )"
-            },
-            "Microsoft.Bcl.AsyncInterfaces": {
-              "target": "Package",
-              "version": "[9.0.6, )"
+              "version": "[3.1.2, )",
+              "versionCentrallyManaged": true
             },
             "Microsoft.Extensions.Configuration": {
               "target": "Package",
-              "version": "[10.0.5, )"
+              "version": "[9.0.0, )",
+              "versionCentrallyManaged": true
             },
             "Microsoft.Extensions.Configuration.Binder": {
               "target": "Package",
-              "version": "[10.0.5, )"
+              "version": "[9.0.0, )",
+              "versionCentrallyManaged": true
+            },
+            "Microsoft.Extensions.Configuration.FileExtensions": {
+              "target": "Package",
+              "version": "[9.0.0, )",
+              "versionCentrallyManaged": true
             },
             "Microsoft.Extensions.Configuration.Json": {
               "target": "Package",
-              "version": "[10.0.5, )"
+              "version": "[9.0.0, )",
+              "versionCentrallyManaged": true
             },
             "Microsoft.Extensions.DependencyInjection": {
               "target": "Package",
-              "version": "[10.0.5, )"
+              "version": "[9.0.0, )",
+              "versionCentrallyManaged": true
             },
             "Microsoft.NET.Test.Sdk": {
               "target": "Package",
-              "version": "[18.4.0, )"
+              "version": "[17.8.0, )",
+              "versionCentrallyManaged": true
             },
             "Microsoft.Playwright": {
               "target": "Package",
-              "version": "[1.59.0, )"
+              "version": "[1.44.0, )",
+              "versionCentrallyManaged": true
             },
             "Reqnroll": {
               "target": "Package",
-              "version": "[3.3.4, )"
-            },
-            "Reqnroll.Microsoft.Extensions.DependencyInjection": {
-              "target": "Package",
-              "version": "[3.3.4, )"
+              "version": "[3.2.1, )",
+              "versionCentrallyManaged": true
             },
             "Reqnroll.MsTest": {
               "target": "Package",
-              "version": "[3.3.4, )"
-            },
-            "Reqnroll.Tools.MsBuild.Generation": {
-              "target": "Package",
-              "version": "[3.3.4, )"
-            },
-            "coverlet.collector": {
-              "target": "Package",
-              "version": "[6.0.2, )"
+              "version": "[3.2.1, )",
+              "versionCentrallyManaged": true
             }
+          },
+          "centralPackageVersions": {
+            "Allure.Commons": "2.13.10",
+            "Allure.NUnit": "2.13.10",
+            "coverlet.collector": "3.2.0",
+            "DotNetEnv": "2.5.0",
+            "FluentAssertions": "7.0.0",
+            "Microsoft.Extensions.Configuration": "9.0.0",
+            "Microsoft.Extensions.Configuration.Binder": "9.0.0",
+            "Microsoft.Extensions.Configuration.FileExtensions": "9.0.0",
+            "Microsoft.Extensions.Configuration.Json": "9.0.0",
+            "Microsoft.Extensions.DependencyInjection": "9.0.0",
+            "Microsoft.NET.Test.Sdk": "17.8.0",
+            "Microsoft.Playwright": "1.44.0",
+            "Microsoft.Playwright.NUnit": "1.44.0",
+            "MSTest.TestAdapter": "3.1.2",
+            "MSTest.TestFramework": "3.1.2",
+            "NUnit": "3.13.3",
+            "NUnit3TestAdapter": "4.5.0",
+            "Reqnroll": "3.2.1",
+            "Reqnroll.MsTest": "3.2.1"
           },
           "imports": [
             "net461",
