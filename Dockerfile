@@ -7,8 +7,12 @@ RUN apt-get update && \
     curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
     apt-get install -y nodejs
 
+
 # Set the working directory
 WORKDIR /app
+
+# Prevent NuGet from using a Windows fallback package folder (fixes CI build error)
+ENV NUGET_FALLBACK_PACKAGES=""
 
 # Copy only csproj and solution files for restore (improves cache)
 COPY *.csproj ./
