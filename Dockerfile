@@ -38,6 +38,10 @@ RUN find / -name NuGet.Config -print || true
 # Restore NuGet packages (this layer will be cached unless dependency files change)
 RUN dotnet restore --configfile nuget.config
 
+# Install Playwright CLI and browsers (cache this layer unless dependencies change)
+RUN dotnet tool install --global Microsoft.Playwright.CLI && \
+    playwright install
+
 # Now copy the rest of the source and config files
 COPY Config ./Config
 COPY Drivers ./Drivers
@@ -51,10 +55,6 @@ COPY entrypoint.sh ./
 
 # Publish the project
 RUN dotnet publish --no-restore --output ./publish --configfile nuget.config
-
-# Install Playwright CLI and browsers
-RUN dotnet tool install --global Microsoft.Playwright.CLI && \
-    playwright install
 
 # Make entrypoint script executable
 RUN chmod +x /app/entrypoint.sh
