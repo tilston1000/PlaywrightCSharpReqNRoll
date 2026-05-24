@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project>
+  <ItemGroup>
+        <PackageVersion Include="FluentAssertions" Version="7.0.0" />
+      <PackageVersion Include="Microsoft.Extensions.Configuration" Version="9.0.0" />
+      <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="9.0.0" />
+      <PackageVersion Include="Microsoft.Extensions.Configuration.FileExtensions" Version="9.0.0" />
+      <PackageVersion Include="Microsoft.Extensions.Configuration.Json" Version="9.0.0" />
+      <PackageVersion Include="Microsoft.Extensions.Configuration.Binder" Version="9.0.0" />
+      <PackageVersion Include="DotNetEnv" Version="2.5.0" />
+    <!-- Strictly enforce compatible versions for Allure, Reqnroll, and test dependencies -->
+    <PackageVersion Include="Allure.Commons" Version="2.13.10" />
+    <PackageVersion Include="Allure.NUnit" Version="2.13.10" />
+    <PackageVersion Include="Reqnroll" Version="3.2.1" />
+    <PackageVersion Include="Reqnroll.MsTest" Version="3.2.1" />
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
+    <PackageVersion Include="MSTest.TestAdapter" Version="3.1.2" />
+    <PackageVersion Include="MSTest.TestFramework" Version="3.1.2" />
+    <PackageVersion Include="NUnit" Version="3.13.3" />
+    <PackageVersion Include="NUnit3TestAdapter" Version="4.5.0" />
+    <PackageVersion Include="coverlet.collector" Version="3.2.0" />
+    <PackageVersion Include="Microsoft.Playwright.NUnit" Version="1.44.0" />
+    <PackageVersion Include="Microsoft.Playwright" Version="1.44.0" />
+  </ItemGroup>
+</Project>

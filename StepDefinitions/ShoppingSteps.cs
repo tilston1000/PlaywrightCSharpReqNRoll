@@ -1,5 +1,5 @@
 using Allure.Net.Commons;
-using FluentAssertions;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using playwrightreqnroll.Helpers;
 using playwrightreqnroll.Pages;
 using Reqnroll;
@@ -64,7 +64,7 @@ namespace playwrightreqnroll.StepDefinitions
 
             await AllureHelpers.RunAllureStep($"Verify the cart contains '{productName}'", async () =>
             {
-                (await _cart.IsItemDisplayed(productName)).Should().BeTrue($"the cart should display the added item: {productName}");     
+                Assert.IsTrue(await _cart.IsItemDisplayed(productName), $"the cart should display the added item: {productName}");
             });
         }
     }
