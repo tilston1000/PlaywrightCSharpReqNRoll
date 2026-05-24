@@ -10,9 +10,9 @@ echo "Listing files in /app/bin/Debug/net9.0 before test run:"
 ls -l /app/bin/Debug/net9.0 || echo "/app/bin/Debug/net9.0 not found"
 echo "Printing /app/reqnroll.json:"
 cat /app/reqnroll.json || echo "/app/reqnroll.json not found"
-echo "Running dotnet test with diagnostic logging..."
-dotnet test --verbosity normal --diag:log.txt
-echo "dotnet test diagnostic log (first 100 lines):"
+echo "Running reqnroll test with diagnostic logging..."
+reqnroll test --verbosity normal --diag:log.txt
+echo "reqnroll test diagnostic log (first 100 lines):"
 head -100 log.txt || echo "log.txt not found"
 echo "Listing /app/allure-results after test run:"
 ls -l /app/allure-results || echo "/app/allure-results not found"
