@@ -22,7 +22,6 @@ WORKDIR /app
 
 # NuGet environment
 ENV NUGET_FALLBACK_PACKAGES=""
-ENV NUGET_PACKAGES=/tmp/nuget
 ENV PATH="$PATH:/root/.dotnet/tools"
 
 # Copy only dependency files first for better Docker cache utilization
