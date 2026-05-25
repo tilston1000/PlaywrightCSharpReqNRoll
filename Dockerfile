@@ -25,7 +25,6 @@ ENV NUGET_FALLBACK_PACKAGES=""
 ENV NUGET_PACKAGES=/tmp/nuget
 ENV PATH="$PATH:/root/.dotnet/tools"
 
-
 # Copy only dependency files first for better Docker cache utilization
 COPY nuget.config ./
 COPY Directory.Packages.props ./
@@ -43,16 +42,11 @@ RUN find / -name NuGet.Config -print || true
 # Restore NuGet packages (this layer will be cached unless dependency files change)
 RUN dotnet restore --configfile nuget.config
 
-
-
-
-# Install Playwright CLI (browsers will be installed after all files are copied)
-RUN dotnet tool install --global Microsoft.Playwright.CLI \
-    && dotnet tool install --global Reqnroll --version 3.3.3
+# Install Playwright CLI and restore local .NET tools (Reqnroll)
+RUN dotnet tool install --global Microsoft.Playwright.CLI && dotnet tool restore
 
 # Ensure PATH includes .dotnet/tools for all users
 ENV PATH="/root/.dotnet/tools:/home/runner/.dotnet/tools:$PATH"
-
 
 # Now copy the rest of the source and config files
 COPY Config ./Config
@@ -65,8 +59,10 @@ COPY StepDefinitions ./StepDefinitions
 COPY appsettings.json ./
 COPY entrypoint.sh ./
 
-# Build the project and install Playwright browsers (now all files are present)
+# Build the project (now all files are present)
 RUN dotnet build
+
+# Install Playwright browsers before copying all source files for better cache utilization
 RUN playwright install
 
 # Publish the project
