@@ -48,7 +48,7 @@ RUN dotnet restore --configfile nuget.config
 
 # Install Playwright CLI (browsers will be installed after all files are copied)
 RUN dotnet tool install --global Microsoft.Playwright.CLI \
-    && dotnet tool install --global Reqnroll
+    && dotnet tool install --global Reqnroll --version 3.3.3
 
 # Ensure PATH includes .dotnet/tools for all users
 ENV PATH="/root/.dotnet/tools:/home/runner/.dotnet/tools:$PATH"
