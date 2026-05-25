@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "isRoot": true,
+  "tools": {
+    "reqnroll": {
+      "version": "3.3.3",
+      "commands": ["reqnroll"]
+    }
+  }
+}
