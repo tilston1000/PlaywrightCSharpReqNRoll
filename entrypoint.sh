@@ -18,4 +18,4 @@ echo "reqnroll test diagnostic log (first 100 lines):"
 head -100 log.txt || echo "log.txt not found"
 echo "Listing /app/allure-results after test run:"
 ls -l /app/allure-results || echo "/app/allure-results not found"
-allure generate allure-results --clean -o allure-report
+allure generate allure-results --clean -o allure-report 
