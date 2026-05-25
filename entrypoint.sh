@@ -13,7 +13,7 @@ cat /app/reqnroll.json || echo "/app/reqnroll.json not found"
 echo "Restoring .NET local tools..."
 dotnet tool restore
 echo "Running reqnroll test with diagnostic logging..."
-dotnet tool run reqnroll test --verbosity normal --diag:log.txt
+reqnroll test --verbosity normal --diag:log.txt
 echo "reqnroll test diagnostic log (first 100 lines):"
 head -100 log.txt || echo "log.txt not found"
 echo "Listing /app/allure-results after test run:"

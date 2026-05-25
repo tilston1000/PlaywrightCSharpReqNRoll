@@ -1,4 +1,8 @@
+# Base image
 FROM mcr.microsoft.com/dotnet/sdk:9.0
+# Install Reqnroll as a global .NET tool (after dependencies and before test run)
+RUN dotnet tool install --global Reqnroll --version 3.3.3
+ENV PATH="/root/.dotnet/tools:$PATH"
 
 # Install Node.js (required for Playwright CLI and Allure CLI), Java (for Allure), and Allure CLI
 RUN apt-get update && \
