@@ -23,6 +23,11 @@ jobs:
       - name: Build
         run: dotnet build --no-restore
 
+      - name: Install Playwright Browsers (dotnet)
+        run: |
+          set -x
+          dotnet tool run playwright install --with-deps
+
       - name: List build output and .playwright directory
         run: |
           echo "Listing bin/Debug directory:"
@@ -40,9 +45,6 @@ jobs:
 
       - name: Install Playwright CLI as local tool
         run: dotnet new tool-manifest --force && dotnet tool install Microsoft.Playwright.CLI
-
-      - name: Install Playwright Browsers (dotnet)
-        run: dotnet tool run playwright install --with-deps
 
       - name: Run .NET tests
         run: dotnet test --no-build --logger "trx;LogFileName=test_results.trx"
