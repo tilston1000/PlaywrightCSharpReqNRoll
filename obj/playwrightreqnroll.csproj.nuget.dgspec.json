@@ -110,7 +110,7 @@
             },
             "Microsoft.Playwright": {
               "target": "Package",
-              "version": "[1.44.0, )",
+              "version": "[1.60.0, )",
               "versionCentrallyManaged": true
             },
             "Reqnroll": {
@@ -136,8 +136,8 @@
             "Microsoft.Extensions.Configuration.Json": "9.0.0",
             "Microsoft.Extensions.DependencyInjection": "9.0.0",
             "Microsoft.NET.Test.Sdk": "17.10.0",
-            "Microsoft.Playwright": "1.44.0",
-            "Microsoft.Playwright.NUnit": "1.44.0",
+            "Microsoft.Playwright": "1.60.0",
+            "Microsoft.Playwright.NUnit": "1.60.0",
             "MSTest.TestAdapter": "3.1.2",
             "MSTest.TestFramework": "3.1.2",
             "NuGet.Frameworks": "6.5.0.154",
