@@ -31,6 +31,14 @@ elseif (Test-Path "$binRoot\osx-x64") { $binPath = "$binRoot\osx-x64" }
 
 # Build and Run tests
 dotnet build
+
+# Install Playwright browsers
+if (Test-Path "$binPath/playwright.ps1") {
+    powershell -ExecutionPolicy Bypass -File "$binPath/playwright.ps1" install
+} else {
+    Write-Host "playwright.ps1 not found in $binPath, skipping browser install."
+}
+
 dotnet test --filter "TestCategory=smoke"
 
 # If results exist in bin, copy them to project root

@@ -33,6 +33,11 @@ jobs:
           ls -l || dir
         shell: bash
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
       - name: Install Playwright Browsers (verbose)
         run: pwsh bin/Debug/net9.0/playwright.ps1 install --verbose
         shell: bash
