@@ -119,6 +119,11 @@
               "version": "[1.44.0, )",
               "versionCentrallyManaged": true
             },
+            "NuGet.Frameworks": {
+              "target": "Package",
+              "version": "[6.5.0.154, )",
+              "versionCentrallyManaged": true
+            },
             "Reqnroll": {
               "target": "Package",
               "version": "[3.2.1, )",
@@ -146,6 +151,7 @@
             "Microsoft.Playwright.NUnit": "1.44.0",
             "MSTest.TestAdapter": "3.1.2",
             "MSTest.TestFramework": "3.1.2",
+            "NuGet.Frameworks": "6.5.0.154",
             "NUnit": "3.13.3",
             "NUnit3TestAdapter": "4.5.0",
             "Reqnroll": "3.2.1",
