@@ -10,7 +10,7 @@ jobs:
   test:
     runs-on: ubuntu-22.04
     env:
-      ALLURE_RESULTS_DIRECTORY: allure-results
+      ALLURE_RESULTS_DIRECTORY: ${{ github.workspace }}/allure-results
       ALLURE_LOG_LEVEL: debug
 
     steps:
@@ -43,15 +43,23 @@ jobs:
         run: |
           mkdir -p ${{ github.workspace }}/allure-results
 
+      - name: Install Allure CLI
+        if: always()
+        run: npm install -g allure-commandline
+
+      - name: Generate Allure Report
+        if: always()
+        run: allure generate ${{ github.workspace }}/allure-results -o ${{ github.workspace }}/allure-report --clean
+
       - name: Upload Allure results
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: allure-results
-          path: allure-results/**
+          path: ${{ github.workspace }}/allure-results/
       - name: Upload Allure report
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: allure-report
-          path: allure-report/
+          path: ${{ github.workspace }}/allure-report/
