@@ -26,14 +26,14 @@ jobs:
       - name: Ensure entrypoint.sh is executable
         run: chmod +x entrypoint.sh
 
-      - name: Install Reqnroll as local tool
+      - name: Install Reqnroll as global tool
         run: |
-          dotnet new tool-manifest --force
-          dotnet tool install Reqnroll --version 3.2.0
+          dotnet tool install -g Reqnroll --version 3.2.0
+          echo "~/.dotnet/tools" >> $GITHUB_PATH
 
       - name: Run Reqnroll tests
         run: |
-          dotnet tool run reqnroll test
+          reqnroll test
 
       - name: List workspace files after test
         run: |
