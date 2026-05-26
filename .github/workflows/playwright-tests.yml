@@ -39,7 +39,7 @@ jobs:
           echo "Listing allure-results directory:"
           ls -l ${{ github.workspace }}/allure-results || echo "allure-results not found"
           echo "Listing allure-report directory:"
-          ls -l ${{ github.workspace }}/allure-report || echo "allure-report not found"
+          ls -l ${{ github.workspace }}/allure-report || echo "allure-report not founds"
 
       - name: Ensure allure-results exists (even if empty)
         run: |
