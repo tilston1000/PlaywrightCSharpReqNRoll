@@ -33,6 +33,10 @@ jobs:
           ls -l || dir
         shell: bash
 
+      - name: Install Playwright Browsers (verbose)
+        run: pwsh bin/Debug/net9.0/playwright.ps1 install --verbose
+        shell: bash
+
       - name: Install Playwright Browsers
         run: pwsh bin/Debug/net9.0/playwright.ps1 install || pwsh .playwright/playwright.ps1 install || npx playwright install
         shell: bash
