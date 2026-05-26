@@ -6,7 +6,7 @@ using Reqnroll;
 
 namespace playwrightreqnroll.Hooks
 {
-    [Binding]
+    [Binding] 
     public class DependencyInjectionSetup
     {
 
