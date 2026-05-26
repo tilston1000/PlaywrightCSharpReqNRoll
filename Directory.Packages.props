@@ -12,7 +12,7 @@
     <!-- Strictly enforce compatible versions for Allure, Reqnroll, and test dependencies -->
     <PackageVersion Include="Reqnroll" Version="3.2.1" />
     <PackageVersion Include="Reqnroll.MsTest" Version="3.2.1" />
-    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.10.0" />
     <PackageVersion Include="MSTest.TestAdapter" Version="3.1.2" />
     <PackageVersion Include="MSTest.TestFramework" Version="3.1.2" />
     <PackageVersion Include="NUnit" Version="3.13.3" />
