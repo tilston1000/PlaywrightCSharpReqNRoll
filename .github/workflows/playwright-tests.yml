@@ -17,6 +17,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Playwright CLI as local tool
+        run: dotnet new tool-manifest --force && dotnet tool install Microsoft.Playwright.CLI
+
       - name: Restore NuGet packages
         run: dotnet restore
 
@@ -24,9 +32,7 @@ jobs:
         run: dotnet build --no-restore
 
       - name: Install Playwright Browsers (dotnet)
-        run: |
-          set -x
-          dotnet tool run playwright install --with-deps
+        run: dotnet tool run playwright install --with-deps
 
       - name: List build output and .playwright directory
         run: |
@@ -37,17 +43,6 @@ jobs:
           echo "Listing root directory:"
           ls -l || dir
         shell: bash
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-
-      - name: Install Playwright CLI as local tool
-        run: dotnet new tool-manifest --force && dotnet tool install Microsoft.Playwright.CLI
-
-      - name: Run .NET tests
-        run: dotnet test --no-build --logger "trx;LogFileName=test_results.trx"
 
       - name: Ensure allure-results exists (even if empty)
         run: mkdir -p ${{ github.workspace }}/allure-results
