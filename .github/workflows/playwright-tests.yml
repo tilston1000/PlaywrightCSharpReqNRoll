@@ -20,6 +20,12 @@ jobs:
       - name: Restore NuGet packages
         run: dotnet restore
 
+      - name: Build
+        run: dotnet build --no-restore
+
+      - name: Install Playwright Browsers
+        run: pwsh $(find . -name "playwright.ps1" | head -1) install --with-deps
+
       - name: Run .NET tests
         run: |
           dotnet test --no-build --logger "trx;LogFileName=test_results.trx"
