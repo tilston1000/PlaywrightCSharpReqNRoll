@@ -16,7 +16,7 @@
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
   </PropertyGroup>
     <ItemGroup>
-      <PackageReference Include="NuGet.Frameworks" Version="6.5.0" />
+      <PackageReference Include="NuGet.Frameworks" />
     </ItemGroup>
 
   <ItemGroup>
