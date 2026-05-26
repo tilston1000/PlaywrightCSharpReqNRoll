@@ -23,8 +23,19 @@ jobs:
       - name: Build
         run: dotnet build --no-restore
 
+      - name: List build output and .playwright directory
+        run: |
+          echo "Listing bin/Debug directory:"
+          ls -lR bin/Debug || dir bin/Debug
+          echo "Listing .playwright directory:"
+          ls -lR .playwright || dir .playwright
+          echo "Listing root directory:"
+          ls -l || dir
+        shell: bash
+
       - name: Install Playwright Browsers
-        run: pwsh $(find . -name "playwright.ps1" | head -1) install --with-deps
+        run: pwsh bin/Debug/net9.0/playwright.ps1 install || pwsh .playwright/playwright.ps1 install || npx playwright install
+        shell: bash
 
       - name: Run .NET tests
         run: dotnet test --no-build --logger "trx;LogFileName=test_results.trx"
