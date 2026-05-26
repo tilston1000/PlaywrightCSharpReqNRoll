@@ -38,6 +38,9 @@ jobs:
         with:
           node-version: '20'
 
+      - name: Install Playwright CLI as local tool
+        run: dotnet new tool-manifest --force && dotnet tool install Microsoft.Playwright.CLI
+
       - name: Install Playwright Browsers (dotnet)
         run: dotnet tool run playwright install --with-deps
 
