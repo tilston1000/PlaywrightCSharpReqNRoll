@@ -38,13 +38,8 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Install Playwright Browsers (verbose)
-        run: pwsh bin/Debug/net9.0/playwright.ps1 install --verbose
-        shell: bash
-
-      - name: Install Playwright Browsers
-        run: pwsh bin/Debug/net9.0/playwright.ps1 install || pwsh .playwright/playwright.ps1 install || npx playwright install
-        shell: bash
+      - name: Install Playwright Browsers (dotnet)
+        run: dotnet tool run playwright install --with-deps
 
       - name: Run .NET tests
         run: dotnet test --no-build --logger "trx;LogFileName=test_results.trx"
