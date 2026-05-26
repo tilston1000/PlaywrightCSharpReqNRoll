@@ -34,6 +34,9 @@ jobs:
       - name: Install Playwright Browsers (dotnet)
         run: dotnet tool run playwright install --with-deps
 
+      - name: Run .NET tests
+        run: dotnet test --no-build --logger "trx;LogFileName=test_results.trx"
+
       - name: Ensure allure-results exists (even if empty)
         run: mkdir -p ${{ github.workspace }}/allure-results
 
