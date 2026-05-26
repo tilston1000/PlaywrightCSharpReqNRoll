@@ -1187,7 +1187,7 @@
           }
         }
       },
-      "NuGet.Frameworks/6.5.0": {
+      "NuGet.Frameworks/6.5.1": {
         "type": "package",
         "compile": {
           "lib/netstandard2.0/NuGet.Frameworks.dll": {}
@@ -3904,7 +3904,7 @@
           }
         }
       },
-      "NuGet.Frameworks/6.5.0": {
+      "NuGet.Frameworks/6.5.1": {
         "type": "package",
         "compile": {
           "lib/netstandard2.0/NuGet.Frameworks.dll": {}
@@ -6889,7 +6889,7 @@
           }
         }
       },
-      "NuGet.Frameworks/6.5.0": {
+      "NuGet.Frameworks/6.5.1": {
         "type": "package",
         "compile": {
           "lib/netstandard2.0/NuGet.Frameworks.dll": {}
@@ -10644,10 +10644,10 @@
         "packageIcon.png"
       ]
     },
-    "NuGet.Frameworks/6.5.0": {
-      "sha512": "QWINE2x3MbTODsWT1Gh71GaGb5icBz4chS8VYvTgsBnsi8esgN6wtHhydd7fvToWECYGq7T4cgBBDiKD/363fg==",
+    "NuGet.Frameworks/6.5.1": {
+      "sha512": "pNL45g2P/ODjqWIvW7EVLwK6Rdpoi5yg4V7DcbpnKDyFZcsQy+8kERXJoXNz05cJfirQNR+OkR96rnKrVqmhTQ==",
       "type": "package",
-      "path": "nuget.frameworks/6.5.0",
+      "path": "nuget.frameworks/6.5.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -10655,7 +10655,7 @@
         "icon.png",
         "lib/net472/NuGet.Frameworks.dll",
         "lib/netstandard2.0/NuGet.Frameworks.dll",
-        "nuget.frameworks.6.5.0.nupkg.sha512",
+        "nuget.frameworks.6.5.1.nupkg.sha512",
         "nuget.frameworks.nuspec"
       ]
     },
@@ -15479,6 +15479,7 @@
       "Microsoft.Extensions.DependencyInjection >= 9.0.0",
       "Microsoft.NET.Test.Sdk >= 17.8.0",
       "Microsoft.Playwright >= 1.44.0",
+      "NuGet.Frameworks >= 6.5.0.154",
       "Reqnroll >= 3.2.1",
       "Reqnroll.MsTest >= 3.2.1"
     ]
@@ -15602,6 +15603,11 @@
             "version": "[1.44.0, )",
             "versionCentrallyManaged": true
           },
+          "NuGet.Frameworks": {
+            "target": "Package",
+            "version": "[6.5.0.154, )",
+            "versionCentrallyManaged": true
+          },
           "Reqnroll": {
             "target": "Package",
             "version": "[3.2.1, )",
@@ -15629,6 +15635,7 @@
           "Microsoft.Playwright.NUnit": "1.44.0",
           "MSTest.TestAdapter": "3.1.2",
           "MSTest.TestFramework": "3.1.2",
+          "NuGet.Frameworks": "6.5.0.154",
           "NUnit": "3.13.3",
           "NUnit3TestAdapter": "4.5.0",
           "Reqnroll": "3.2.1",
@@ -15707,6 +15714,18 @@
       "warningLevel": 1,
       "message": "playwrightreqnroll depends on MSTest.TestFramework (>= 3.1.2) but MSTest.TestFramework 3.1.2 was not found. MSTest.TestFramework 3.2.0 was resolved instead.",
       "libraryId": "MSTest.TestFramework",
+      "targetGraphs": [
+        "net9.0",
+        "net9.0/linux-x64",
+        "net9.0/win-x64"
+      ]
+    },
+    {
+      "code": "NU1603",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "playwrightreqnroll depends on NuGet.Frameworks (>= 6.5.0.154) but NuGet.Frameworks 6.5.0.154 was not found. NuGet.Frameworks 6.5.1 was resolved instead.",
+      "libraryId": "NuGet.Frameworks",
       "targetGraphs": [
         "net9.0",
         "net9.0/linux-x64",
