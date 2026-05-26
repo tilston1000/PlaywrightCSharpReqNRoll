@@ -8,7 +8,9 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
     env:
       ALLURE_RESULTS_DIRECTORY: ${{ github.workspace }}/allure-results
       ALLURE_LOG_LEVEL: debug
