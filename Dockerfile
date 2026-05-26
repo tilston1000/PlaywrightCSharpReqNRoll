@@ -1,5 +1,5 @@
 # Base image
-FROM mcr.microsoft.com/dotnet/sdk:9.0
+FROM mcr.microsoft.com/dotnet/sdk:8.0
 # Install Reqnroll as a global .NET tool (after dependencies and before test run)
 RUN dotnet tool install --global Reqnroll --version 3.3.3
 ENV PATH="/root/.dotnet/tools:$PATH"
