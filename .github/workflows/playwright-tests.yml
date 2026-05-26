@@ -34,16 +34,6 @@ jobs:
       - name: Install Playwright Browsers (dotnet)
         run: dotnet tool run playwright install --with-deps
 
-      - name: List build output and .playwright directory
-        run: |
-          echo "Listing bin/Debug directory:"
-          ls -lR bin/Debug || dir bin/Debug
-          echo "Listing .playwright directory:"
-          ls -lR .playwright || dir .playwright
-          echo "Listing root directory:"
-          ls -l || dir
-        shell: bash
-
       - name: Ensure allure-results exists (even if empty)
         run: mkdir -p ${{ github.workspace }}/allure-results
 
