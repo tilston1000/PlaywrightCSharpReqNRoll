@@ -8,7 +8,7 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     env:
       ALLURE_RESULTS_DIRECTORY: allure-results
       ALLURE_LOG_LEVEL: debug
