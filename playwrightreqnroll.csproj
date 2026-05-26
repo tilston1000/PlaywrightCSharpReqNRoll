@@ -16,7 +16,6 @@
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
   </PropertyGroup>
     <ItemGroup>
-    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
       <PackageReference Include="NuGet.Frameworks" />
     </ItemGroup>
 
