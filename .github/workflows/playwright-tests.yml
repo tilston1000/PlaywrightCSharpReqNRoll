@@ -23,21 +23,12 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     env:
       ALLURE_RESULTS_DIRECTORY: ${{ github.workspace }}/allure-results
-      ALLURE_LOG_LEVEL: debug
       TEST_USERNAME: ${{ secrets.TEST_USERNAME }}
       TEST_PASSWORD: ${{ secrets.TEST_PASSWORD }}
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
 
       - name: Install Playwright CLI as local tool
         run: dotnet new tool-manifest --force && dotnet tool install Microsoft.Playwright.CLI
@@ -59,17 +50,16 @@ jobs:
         shell: bash
         run: |
           mkdir -p "${{ github.workspace }}/allure-results"
-          echo "Discovered allure-results directories:"
-          find "${{ github.workspace }}" -type d -name "allure-results" -print
-
-          while IFS= read -r dir; do
+          for dir in $(find "${{ github.workspace }}" -type d -name "allure-results"); do
             if [ "$dir" != "${{ github.workspace }}/allure-results" ]; then
               cp -f "$dir"/* "${{ github.workspace }}/allure-results/" 2>/dev/null || true
             fi
-          done < <(find "${{ github.workspace }}" -type d -name "allure-results")
+          done
 
-          echo "Files ready for upload:"
-          ls -la "${{ github.workspace }}/allure-results" || true
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
 
       - name: Install Allure CLI
         if: always()
