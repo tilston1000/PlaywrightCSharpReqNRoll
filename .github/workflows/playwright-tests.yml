@@ -37,8 +37,22 @@ jobs:
       - name: Run .NET tests
         run: dotnet test --no-build --logger "trx;LogFileName=test_results.trx"
 
-      - name: Ensure allure-results exists (even if empty)
-        run: mkdir -p ${{ github.workspace }}/allure-results
+      - name: Collect Allure results
+        if: always()
+        shell: bash
+        run: |
+          mkdir -p "${{ github.workspace }}/allure-results"
+          echo "Discovered allure-results directories:"
+          find "${{ github.workspace }}" -type d -name "allure-results" -print
+
+          while IFS= read -r dir; do
+            if [ "$dir" != "${{ github.workspace }}/allure-results" ]; then
+              cp -f "$dir"/* "${{ github.workspace }}/allure-results/" 2>/dev/null || true
+            fi
+          done < <(find "${{ github.workspace }}" -type d -name "allure-results")
+
+          echo "Files ready for upload:"
+          ls -la "${{ github.workspace }}/allure-results" || true
 
       - name: Install Allure CLI
         if: always()
@@ -53,7 +67,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: allure-results
-          path: allure-results/**
+          path: ${{ github.workspace }}/allure-results
 
       - name: Upload Allure report
         if: always()
