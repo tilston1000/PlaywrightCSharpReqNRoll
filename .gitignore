@@ -1,8 +1,11 @@
 bin/
 obj/
+.env
+*.local.ps1
 playwright-report/
 test-results/
 allure-results/
 allure-report/
 TestResults/
 videos/
+screenshots/
