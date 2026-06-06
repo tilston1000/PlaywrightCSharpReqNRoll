@@ -15,9 +15,6 @@
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
   </PropertyGroup>
-    <ItemGroup>
-    </ItemGroup>
-
   <ItemGroup>
       <PackageReference Include="Allure.Reqnroll" />
       <PackageReference Include="FluentAssertions" />
