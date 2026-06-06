@@ -201,13 +201,9 @@ jobs:
         shell: bash
         run: |
           if [ -d "allure-results-history" ] && [ -d "allure-results-history/history" ]; then
-            for dir in allure-results-chromium allure-results-firefox allure-results-webkit; do
-              if [ -d "$dir" ]; then
-                mkdir -p "$dir/history"
-                cp -r allure-results-history/history/* "$dir/history/" 2>/dev/null || true
-              fi
-            done
-            echo "History restored for trend tracking."
+            mkdir -p allure-results-history-only/history
+            cp -r allure-results-history/history/* allure-results-history-only/history/ 2>/dev/null || true
+            echo "History restored into dedicated folder for trend tracking."
           else
             echo "No previous history found; starting fresh."
           fi
@@ -242,7 +238,12 @@ jobs:
           }
           EOF
 
-          RESULT_DIRS=("allure-results-merged-meta" "${RESULT_DIRS[@]}")
+          # Prepend dedicated history folder (if it exists) so merged report inherits trends without duplicating results.
+          if [ -d "allure-results-history-only" ]; then
+            RESULT_DIRS=("allure-results-merged-meta" "allure-results-history-only" "${RESULT_DIRS[@]}")
+          else
+            RESULT_DIRS=("allure-results-merged-meta" "${RESULT_DIRS[@]}")
+          fi
 
           allure generate "${RESULT_DIRS[@]}" -o allure-report --clean
 
