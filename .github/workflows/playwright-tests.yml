@@ -59,6 +59,7 @@ jobs:
       - name: Run .NET tests
         run: dotnet test --no-build --logger "trx;LogFileName=test_results.trx"
         env:
+          HEADLESS: true
           SlowMo: 0
 
       - name: Collect Allure results

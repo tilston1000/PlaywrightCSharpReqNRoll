@@ -20,6 +20,14 @@ namespace playwrightreqnroll.Config
             {
                 settings.Headless = string.Equals(headlessEnv, "true", StringComparison.OrdinalIgnoreCase);
             }
+            else
+            {
+                var isCi = string.Equals(Environment.GetEnvironmentVariable("CI"), "true", StringComparison.OrdinalIgnoreCase);
+                if (isCi)
+                {
+                    settings.Headless = true;
+                }
+            }
 
             var slowMoEnv = Environment.GetEnvironmentVariable("SlowMo");
             if(!string.IsNullOrEmpty(slowMoEnv) && int.TryParse(slowMoEnv, out var slowMoValue))
