@@ -1,4 +1,0 @@
-"DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
-"","2874","Add <product> to cart [firefox]","","Sat Jun 06 21:58:33 BST 2026","passed","Sat Jun 06 21:58:36 BST 2026","","","",""
-"","3168","Add <product> to cart [firefox]","","Sat Jun 06 21:58:29 BST 2026","passed","Sat Jun 06 21:58:32 BST 2026","","","",""
-"","5326","Cart perists after logout and login [firefox]","","Sat Jun 06 21:58:36 BST 2026","passed","Sat Jun 06 21:58:42 BST 2026","","","",""
