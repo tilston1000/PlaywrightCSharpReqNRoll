@@ -5,6 +5,18 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
+  workflow_dispatch:
+    inputs:
+      browser:
+        description: Browser to run in CI
+        required: true
+        default: all
+        type: choice
+        options:
+          - all
+          - chromium
+          - firefox
+          - webkit
 
 permissions:
   contents: read
@@ -21,7 +33,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        browser: [chromium, firefox, webkit]
+        browser: ${{ fromJson(github.event_name == 'workflow_dispatch' && (inputs.browser == 'all' && '["chromium","firefox","webkit"]' || format('["{0}"]', inputs.browser)) || '["chromium","firefox","webkit"]') }}
     env:
       ALLURE_RESULTS_DIRECTORY: ${{ github.workspace }}/allure-results-${{ matrix.browser }}
       BROWSER: ${{ matrix.browser }}
@@ -46,8 +58,9 @@ jobs:
         uses: actions/cache@v5
         with:
           path: ~/.cache/ms-playwright
-          key: ${{ runner.os }}-playwright-${{ hashFiles('.config/dotnet-tools.json', '**/*.csproj') }}
+          key: ${{ runner.os }}-playwright-${{ matrix.browser }}-${{ hashFiles('.config/dotnet-tools.json', '**/*.csproj') }}
           restore-keys: |
+            ${{ runner.os }}-playwright-${{ matrix.browser }}-
             ${{ runner.os }}-playwright-
 
       - name: Restore local .NET tools
@@ -185,6 +198,8 @@ jobs:
           RESULT_DIRS=()
           for dir in allure-results-chromium allure-results-firefox allure-results-webkit; do
             if [ -d "$dir" ] && find "$dir" -maxdepth 1 -type f -name '*.json' | grep -q .; then
+              # Remove per-browser executor metadata so merged report does not inherit a single-browser title.
+              rm -f "$dir/executor.json"
               RESULT_DIRS+=("$dir")
             fi
           done
@@ -193,6 +208,19 @@ jobs:
             echo "No Allure result artifacts were downloaded; skipping merged report generation."
             exit 0
           fi
+
+          mkdir -p allure-results-merged-meta
+          cat > "allure-results-merged-meta/executor.json" << EOF
+          {
+            "name": "GitHub Actions",
+            "type": "github",
+            "buildName": "${{ github.workflow }} #${{ github.run_number }} (merged)",
+            "buildUrl": "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}",
+            "reportName": "CI All Browsers"
+          }
+          EOF
+
+          RESULT_DIRS=("allure-results-merged-meta" "${RESULT_DIRS[@]}")
 
           allure generate "${RESULT_DIRS[@]}" -o allure-report --clean
 
