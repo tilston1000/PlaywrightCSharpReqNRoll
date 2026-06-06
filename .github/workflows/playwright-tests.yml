@@ -121,15 +121,6 @@ jobs:
         with:
           node-version: '24'
 
-      - name: Upload TRX test results
-        if: always()
-        uses: actions/upload-artifact@v7
-        with:
-          name: test-results-trx-${{ matrix.browser }}
-          path: |
-            **/*_${{ matrix.browser }}.trx
-          if-no-files-found: warn
-
       - name: Install Allure CLI
         if: always()
         run: npm install -g allure-commandline@2
