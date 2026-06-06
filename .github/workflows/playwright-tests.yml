@@ -282,7 +282,7 @@ jobs:
 
   deploy-to-pages:
     name: Deploy to Pages
-    if: always() && github.event_name == 'push' && github.ref == 'refs/heads/main' && needs.merge-allure-reports.outputs.has_merged_report == 'true'
+    if: always() && github.ref == 'refs/heads/main' && needs.merge-allure-reports.outputs.has_merged_report == 'true' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
     needs: merge-allure-reports
     runs-on: ubuntu-latest
     timeout-minutes: 15
