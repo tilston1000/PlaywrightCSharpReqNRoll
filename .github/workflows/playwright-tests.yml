@@ -10,11 +10,12 @@ permissions:
   contents: read
 
 concurrency:
-  group: pages
+  group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  test:
+  run-ui-tests:
+    name: Run UI Tests
     runs-on: ubuntu-latest
     timeout-minutes: 45
     env:
@@ -77,11 +78,20 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: '20'
+          node-version: '24'
+
+      - name: Upload TRX test results
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: test-results-trx
+          path: |
+            **/*.trx
+          if-no-files-found: warn
 
       - name: Install Allure CLI
         if: always()
-        run: npm install -g allure-commandline
+        run: npm install -g allure-commandline@2
 
       - name: Generate Allure Report
         if: always()
@@ -110,7 +120,7 @@ jobs:
   deploy-to-pages:
     name: Deploy to Pages
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    needs: test
+    needs: run-ui-tests
     runs-on: ubuntu-latest
     timeout-minutes: 15
     permissions:

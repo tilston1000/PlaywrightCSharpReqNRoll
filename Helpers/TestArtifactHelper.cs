@@ -1,6 +1,7 @@
 using playwrightreqnroll.Config;
 using playwrightreqnroll.Drivers;
 using Reqnroll;
+using System.Diagnostics;
 
 namespace playwrightreqnroll.Helpers;
 
@@ -27,7 +28,7 @@ public class TestArtifactHelper(TestSettings settings)
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"[WARN] Failed to capture screenshot for scenario '{scenarioContext.ScenarioInfo.Title}': {ex.Message}");
+            Trace.TraceWarning($"[WARN] Failed to capture screenshot for scenario '{scenarioContext.ScenarioInfo.Title}': {ex.Message}");
         }
     }
 
@@ -47,7 +48,7 @@ public class TestArtifactHelper(TestSettings settings)
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"[WARN] Failed to process Playwright video for scenario '{scenarioContext.ScenarioInfo.Title}': {ex.Message}");
+            Trace.TraceWarning($"[WARN] Failed to process Playwright video for scenario '{scenarioContext.ScenarioInfo.Title}': {ex.Message}");
         }
     }
 

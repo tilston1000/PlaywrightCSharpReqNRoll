@@ -1,4 +1,5 @@
 using Allure.Net.Commons;
+using System.Diagnostics;
 
 namespace playwrightreqnroll.Helpers;
 
@@ -32,7 +33,7 @@ public static class AllureHelpers
                 }
                 catch (Exception updateEx)
                 {
-                    Console.WriteLine($"[AllureHelpers] Failed to update Allure step status: {updateEx.Message}");
+                    Trace.TraceWarning($"[AllureHelpers] Failed to update Allure step status: {updateEx.Message}");
                 }
             }
             throw;
@@ -47,7 +48,7 @@ public static class AllureHelpers
                 }
                 catch (Exception stopEx)
                 {
-                    Console.WriteLine($"[AllureHelpers] Failed to stop Allure step: {stopEx.Message}");
+                    Trace.TraceWarning($"[AllureHelpers] Failed to stop Allure step: {stopEx.Message}");
                 }
             }
         }

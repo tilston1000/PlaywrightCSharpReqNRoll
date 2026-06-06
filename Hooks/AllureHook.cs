@@ -1,5 +1,6 @@
 using Reqnroll;
 using Allure.Net.Commons;
+using System.Diagnostics;
 
 namespace playwrightreqnroll.Hooks
 {
@@ -30,7 +31,7 @@ namespace playwrightreqnroll.Hooks
                 }
                 else
                 {
-                    Console.WriteLine($"[AllureHook] Screenshot not found: {screenshotPath}");
+                    Trace.TraceWarning($"[AllureHook] Screenshot not found: {screenshotPath}");
                 }
             }
 
@@ -49,7 +50,7 @@ namespace playwrightreqnroll.Hooks
                 }
                 else
                 {
-                    Console.WriteLine($"[AllureHook] Video not found: {videoPath}");
+                    Trace.TraceWarning($"[AllureHook] Video not found: {videoPath}");
                 }
             }
         }

@@ -1,5 +1,6 @@
 using DotNetEnv;
 using playwrightreqnroll.Config;
+using System.Diagnostics;
 
 namespace playwrightreqnroll.Helpers;
 
@@ -28,7 +29,7 @@ public static class TestStartupHelper
         {
             var isCi = string.Equals(Environment.GetEnvironmentVariable("CI"), "true", StringComparison.OrdinalIgnoreCase);
             if (!isCi)
-                Console.WriteLine("[WARN] .env file not found in any parent directory.");
+                Trace.TraceWarning("[WARN] .env file not found in any parent directory.");
         }
     }
 
@@ -54,7 +55,7 @@ public static class TestStartupHelper
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"[WARN] Failed to delete old video artifact '{file}': {ex.Message}");
+                Trace.TraceWarning($"[WARN] Failed to delete old video artifact '{file}': {ex.Message}");
             }
         }
 
@@ -73,7 +74,7 @@ public static class TestStartupHelper
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"[WARN] Failed to delete old video directory '{directory}': {ex.Message}");
+                Trace.TraceWarning($"[WARN] Failed to delete old video directory '{directory}': {ex.Message}");
             }
         }
     }
