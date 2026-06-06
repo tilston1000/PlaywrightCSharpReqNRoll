@@ -50,6 +50,7 @@
     <PackageReference Include="Microsoft.Playwright" />
     <PackageReference Include="Reqnroll" />
     <PackageReference Include="Reqnroll.MsTest" />
+    <PackageReference Include="Reqnroll.Microsoft.Extensions.DependencyInjection" />
     <PackageReference Include="MSTest.TestFramework" />
     <PackageReference Include="MSTest.TestAdapter" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" />

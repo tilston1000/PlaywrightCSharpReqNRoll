@@ -8,8 +8,10 @@ public static class AuthHelpers
         {
             var username = Environment.GetEnvironmentVariable("TEST_USERNAME");
             var password = Environment.GetEnvironmentVariable("TEST_PASSWORD");
-            if(string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
-                throw new InvalidOperationException("USERNAME or PASSWORD environment variable is not set.");
+            if (string.IsNullOrEmpty(username))
+                throw new InvalidOperationException("TEST_USERNAME environment variable is not set.");
+            if (string.IsNullOrEmpty(password))
+                throw new InvalidOperationException("TEST_PASSWORD environment variable is not set.");
 
             await home.Login(username, password);
         }
