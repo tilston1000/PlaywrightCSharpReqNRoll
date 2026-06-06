@@ -60,7 +60,7 @@ jobs:
         run: dotnet build --no-restore
 
       - name: Install Playwright browsers
-        run: dotnet tool run playwright install ${{ matrix.browser }}
+        run: dotnet tool run playwright install --with-deps ${{ matrix.browser }}
 
       - name: Run .NET tests
         run: dotnet test --no-build --logger "trx;LogFileName=test_results_${{ matrix.browser }}.trx"
@@ -145,6 +145,8 @@ jobs:
     needs: run-ui-tests
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    outputs:
+      has_merged_report: ${{ steps.report_check.outputs.has_report }}
     steps:
       - name: Download Allure results (chromium)
         uses: actions/download-artifact@v5
@@ -194,15 +196,26 @@ jobs:
 
           allure generate "${RESULT_DIRS[@]}" -o allure-report --clean
 
+      - name: Check merged report presence
+        id: report_check
+        if: always()
+        shell: bash
+        run: |
+          if [ -d "allure-report" ] && find "allure-report" -type f | grep -q .; then
+            echo "has_report=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_report=false" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Upload merged Allure report
-        if: always() && hashFiles('allure-report/**') != ''
+        if: always() && steps.report_check.outputs.has_report == 'true'
         uses: actions/upload-artifact@v7
         with:
           name: allure-report-merged
           path: allure-report/
 
       - name: Upload Pages artifact
-        if: always() && github.event_name == 'push' && github.ref == 'refs/heads/main' && hashFiles('allure-report/**') != ''
+        if: always() && github.event_name == 'push' && github.ref == 'refs/heads/main' && steps.report_check.outputs.has_report == 'true'
         uses: actions/upload-pages-artifact@v5
         with:
           path: allure-report
@@ -241,7 +254,7 @@ jobs:
 
   deploy-to-pages:
     name: Deploy to Pages
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: always() && github.event_name == 'push' && github.ref == 'refs/heads/main' && needs.merge-allure-reports.outputs.has_merged_report == 'true'
     needs: merge-allure-reports
     runs-on: ubuntu-latest
     timeout-minutes: 15
