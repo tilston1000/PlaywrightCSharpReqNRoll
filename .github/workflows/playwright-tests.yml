@@ -8,8 +8,6 @@ on:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 concurrency:
   group: pages
@@ -18,9 +16,7 @@ concurrency:
 jobs:
   test:
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+    timeout-minutes: 45
     env:
       ALLURE_RESULTS_DIRECTORY: ${{ github.workspace }}/allure-results
       TEST_USERNAME: ${{ secrets.TEST_USERNAME }}
@@ -28,10 +24,26 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
-      - name: Install Playwright CLI as local tool
-        run: dotnet new tool-manifest --force && dotnet tool install Microsoft.Playwright.CLI
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+          cache: true
+          cache-dependency-path: |
+            **/*.csproj
+
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ hashFiles('.config/dotnet-tools.json', '**/*.csproj') }}
+          restore-keys: |
+            ${{ runner.os }}-playwright-
+
+      - name: Restore local .NET tools
+        run: dotnet tool restore
 
       - name: Restore NuGet packages
         run: dotnet restore
@@ -57,7 +69,7 @@ jobs:
           done
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: '20'
 
@@ -71,25 +83,36 @@ jobs:
 
       - name: Upload Allure results
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: allure-results
           path: ${{ github.workspace }}/allure-results
 
       - name: Upload Allure report
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: allure-report
           path: allure-report/
 
       - name: Upload Pages artifact
-        if: always()
-        uses: actions/upload-pages-artifact@v3
+        if: always() && github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: actions/upload-pages-artifact@v5
         with:
           path: ${{ github.workspace }}/allure-report
 
+  deploy:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: test
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
       - name: Deploy to GitHub Pages
-        if: always()
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5

@@ -2,6 +2,10 @@
   "version": 1,
   "isRoot": true,
   "tools": {
+    "microsoft.playwright.cli": {
+      "version": "1.55.0",
+      "commands": ["playwright"]
+    },
     "reqnroll": {
       "version": "3.2.0",
       "commands": ["reqnroll"]
