@@ -21,6 +21,12 @@ namespace playwrightreqnroll.Config
                 settings.Headless = string.Equals(headlessEnv, "true", StringComparison.OrdinalIgnoreCase);
             }
 
+            var slowMoEnv = Environment.GetEnvironmentVariable("SlowMo");
+            if(!string.IsNullOrEmpty(slowMoEnv) && int.TryParse(slowMoEnv, out var slowMoValue))
+            {
+                settings.SlowMo = slowMoValue;
+            }
+
             return settings;
         }
     }

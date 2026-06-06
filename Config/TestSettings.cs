@@ -7,6 +7,7 @@ namespace playwrightreqnroll.Config
         public int Timeout {get; set; }
         public required string ScreenshotsDirectory {get; set;} 
         public required string VideosDirectory {get; set;}
+        public int SlowMo { get; set; } = 300;
     } 
 }
 

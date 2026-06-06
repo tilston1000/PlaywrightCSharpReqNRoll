@@ -44,7 +44,7 @@ namespace playwrightreqnroll.Hooks
             var (safeScenarioName, safeProductName) = GetSafeNames();
             var videoDir = GetVideoDirectory(safeScenarioName, safeProductName);
             Directory.CreateDirectory(videoDir);
-            await _driver.StartAsync(Settings?.Headless ?? true, videoDir, Settings?.Timeout ?? 5000);
+            await _driver.StartAsync(Settings?.Headless ?? true, videoDir, Settings?.Timeout ?? 5000, Settings?.SlowMo ?? 300);
         }
 
         [AfterScenario(Order = 0)]

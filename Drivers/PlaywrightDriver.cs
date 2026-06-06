@@ -9,13 +9,13 @@ namespace playwrightreqnroll.Drivers
         private IBrowserContext? _context;
         public IPage? Page {get; private set;}
 
-        public async Task StartAsync(bool headless, string? videoDir = null, int timeout = 5000)
+        public async Task StartAsync(bool headless, string? videoDir = null, int timeout = 5000, int slowMo = 300)
         {
             _playwright = await Playwright.CreateAsync();
             _browser = await _playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions()
             {
                 Headless = headless,
-                SlowMo = 300 // Slow down by 100ms between actions (adjust as needed)
+                SlowMo = slowMo
             });
 
 
