@@ -161,6 +161,13 @@ jobs:
     outputs:
       has_merged_report: ${{ steps.report_check.outputs.has_report }}
     steps:
+      - name: Download previous Allure history
+        uses: actions/download-artifact@v5
+        continue-on-error: true
+        with:
+          name: allure-history
+          path: allure-results-history
+
       - name: Download Allure results (chromium)
         uses: actions/download-artifact@v5
         continue-on-error: true
@@ -189,6 +196,21 @@ jobs:
 
       - name: Install Allure CLI
         run: npm install -g allure-commandline@2
+
+      - name: Restore Allure history for trend tracking
+        shell: bash
+        run: |
+          if [ -d "allure-results-history" ] && [ -d "allure-results-history/history" ]; then
+            for dir in allure-results-chromium allure-results-firefox allure-results-webkit; do
+              if [ -d "$dir" ]; then
+                mkdir -p "$dir/history"
+                cp -r allure-results-history/history/* "$dir/history/" 2>/dev/null || true
+              fi
+            done
+            echo "History restored for trend tracking."
+          else
+            echo "No previous history found; starting fresh."
+          fi
 
       - name: Generate merged Allure report
         shell: bash
@@ -241,6 +263,14 @@ jobs:
         with:
           name: allure-report-merged
           path: allure-report/
+
+      - name: Save Allure history for next run
+        if: always() && steps.report_check.outputs.has_report == 'true'
+        uses: actions/upload-artifact@v7
+        with:
+          name: allure-history
+          path: allure-report/history/
+          retention-days: 30
 
       - name: Upload Pages artifact
         if: always() && github.ref == 'refs/heads/main' && steps.report_check.outputs.has_report == 'true' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
