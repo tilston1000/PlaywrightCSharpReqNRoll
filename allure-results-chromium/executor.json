@@ -1,0 +1,6 @@
+{
+    "buildName":  "Local chromium",
+    "name":  "Local",
+    "reportName":  "Local chromium",
+    "type":  "local"
+}

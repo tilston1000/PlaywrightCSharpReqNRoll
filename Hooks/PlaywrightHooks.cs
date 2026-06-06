@@ -49,7 +49,7 @@ namespace playwrightreqnroll.Hooks
         {
             var videoDir = _testArtifactHelper.GetVideoDirectory(_scenarioContext);
             Directory.CreateDirectory(videoDir);
-            await _driver.StartAsync(_settings.Headless, videoDir, _settings.Timeout, _settings.SlowMo);
+            await _driver.StartAsync(_settings.Browser, _settings.Headless, videoDir, _settings.Timeout, _settings.SlowMo);
         }
 
         [AfterScenario(Order = 0)]

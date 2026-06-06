@@ -1,6 +1,7 @@
 using Reqnroll;
 using Allure.Net.Commons;
 using System.Diagnostics;
+using playwrightreqnroll.Config;
 
 namespace playwrightreqnroll.Hooks
 {
@@ -11,6 +12,93 @@ namespace playwrightreqnroll.Hooks
         public AllureHook(ScenarioContext scenarioContext)
         {
             _scenarioContext = scenarioContext;
+        }
+
+        [BeforeScenario(Order = 1)]
+        public void AddBrowserMetadata()
+        {
+            var browser = Environment.GetEnvironmentVariable("BROWSER");
+            if (string.IsNullOrWhiteSpace(browser))
+            {
+                try
+                {
+                    browser = ConfigReader.Load().Browser;
+                }
+                catch (Exception ex)
+                {
+                    Trace.TraceWarning($"[AllureHook] Failed to resolve browser from config: {ex.Message}");
+                    return;
+                }
+            }
+
+            browser = browser.Trim().ToLowerInvariant();
+
+            try
+            {
+                AllureLifecycle.Instance.UpdateTestCase(testResult =>
+                {
+                    testResult.parameters ??= new List<Parameter>();
+                    var existingBrowserParameter = testResult.parameters
+                        .FirstOrDefault(p => string.Equals(p.name, "browser", StringComparison.OrdinalIgnoreCase));
+
+                    if (existingBrowserParameter is null)
+                    {
+                        testResult.parameters.Add(new Parameter
+                        {
+                            name = "browser",
+                            value = browser,
+                            excluded = false
+                        });
+                    }
+                    else
+                    {
+                        existingBrowserParameter.value = browser;
+                    }
+
+                    testResult.labels ??= new List<Label>();
+                    var existingBrowserLabel = testResult.labels
+                        .FirstOrDefault(l => string.Equals(l.name, "browser", StringComparison.OrdinalIgnoreCase));
+
+                    if (existingBrowserLabel is null)
+                    {
+                        testResult.labels.Add(new Label
+                        {
+                            name = "browser",
+                            value = browser
+                        });
+                    }
+                    else
+                    {
+                        existingBrowserLabel.value = browser;
+                    }
+
+                    if (!string.IsNullOrWhiteSpace(testResult.name) &&
+                        !testResult.name.EndsWith($" [{browser}]", StringComparison.OrdinalIgnoreCase))
+                    {
+                        testResult.name = $"{testResult.name} [{browser}]";
+                    }
+
+                    if (!string.IsNullOrWhiteSpace(testResult.fullName) &&
+                        !testResult.fullName.EndsWith($" [{browser}]", StringComparison.OrdinalIgnoreCase))
+                    {
+                        testResult.fullName = $"{testResult.fullName} [{browser}]";
+                    }
+
+                    if (!string.IsNullOrWhiteSpace(testResult.historyId))
+                    {
+                        testResult.historyId = $"{testResult.historyId}-{browser}";
+                    }
+
+                    if (!string.IsNullOrWhiteSpace(testResult.testCaseId))
+                    {
+                        testResult.testCaseId = $"{testResult.testCaseId}-{browser}";
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                Trace.TraceWarning($"[AllureHook] Failed to add browser metadata: {ex.Message}");
+            }
         }
 
         [AfterScenario(Order = 1)]

@@ -15,11 +15,16 @@ concurrency:
 
 jobs:
   run-ui-tests:
-    name: Run UI Tests
+    name: Run UI Tests (${{ matrix.browser }})
     runs-on: ubuntu-latest
     timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chromium, firefox, webkit]
     env:
-      ALLURE_RESULTS_DIRECTORY: ${{ github.workspace }}/allure-results
+      ALLURE_RESULTS_DIRECTORY: ${{ github.workspace }}/allure-results-${{ matrix.browser }}
+      BROWSER: ${{ matrix.browser }}
       TEST_USERNAME: ${{ secrets.TEST_USERNAME }}
       TEST_PASSWORD: ${{ secrets.TEST_PASSWORD }}
 
@@ -55,11 +60,10 @@ jobs:
         run: dotnet build --no-restore
 
       - name: Install Playwright browsers
-        if: steps.playwright-cache.outputs.cache-hit != 'true'
-        run: dotnet tool run playwright install
+        run: dotnet tool run playwright install ${{ matrix.browser }}
 
       - name: Run .NET tests
-        run: dotnet test --no-build --logger "trx;LogFileName=test_results.trx"
+        run: dotnet test --no-build --logger "trx;LogFileName=test_results_${{ matrix.browser }}.trx"
         env:
           HEADLESS: true
           SlowMo: 0
@@ -68,12 +72,36 @@ jobs:
         if: always()
         shell: bash
         run: |
-          mkdir -p "${{ github.workspace }}/allure-results"
+          mkdir -p "${{ github.workspace }}/allure-results-${{ matrix.browser }}"
           for dir in $(find "${{ github.workspace }}" -type d -name "allure-results"); do
-            if [ "$dir" != "${{ github.workspace }}/allure-results" ]; then
-              cp -f "$dir"/* "${{ github.workspace }}/allure-results/" 2>/dev/null || true
+            if [ "$dir" != "${{ github.workspace }}/allure-results-${{ matrix.browser }}" ]; then
+              cp -f "$dir"/* "${{ github.workspace }}/allure-results-${{ matrix.browser }}/" 2>/dev/null || true
             fi
           done
+
+      - name: Write Allure environment metadata
+        if: always()
+        shell: bash
+        run: |
+          cat > "${{ github.workspace }}/allure-results-${{ matrix.browser }}/environment.properties" << EOF
+          Browser=${{ matrix.browser }}
+          Execution=ci
+          Workflow=${{ github.workflow }}
+          EOF
+
+      - name: Write Allure executor metadata
+        if: always()
+        shell: bash
+        run: |
+          cat > "${{ github.workspace }}/allure-results-${{ matrix.browser }}/executor.json" << EOF
+          {
+            "name": "GitHub Actions",
+            "type": "github",
+            "buildName": "${{ github.workflow }} #${{ github.run_number }} (${{ matrix.browser }})",
+            "buildUrl": "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}",
+            "reportName": "CI ${{ matrix.browser }}"
+          }
+          EOF
 
       - name: Set up Node.js
         uses: actions/setup-node@v6
@@ -84,9 +112,9 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v7
         with:
-          name: test-results-trx
+          name: test-results-trx-${{ matrix.browser }}
           path: |
-            **/*.trx
+            **/*_${{ matrix.browser }}.trx
           if-no-files-found: warn
 
       - name: Install Allure CLI
@@ -95,32 +123,126 @@ jobs:
 
       - name: Generate Allure Report
         if: always()
-        run: allure generate ${{ github.workspace }}/allure-results -o ${{ github.workspace }}/allure-report --clean
+        run: allure generate ${{ github.workspace }}/allure-results-${{ matrix.browser }} -o ${{ github.workspace }}/allure-report-${{ matrix.browser }} --clean
 
       - name: Upload Allure results
         if: always()
         uses: actions/upload-artifact@v7
         with:
-          name: allure-results
-          path: ${{ github.workspace }}/allure-results
+          name: allure-results-${{ matrix.browser }}
+          path: ${{ github.workspace }}/allure-results-${{ matrix.browser }}
 
       - name: Upload Allure report
         if: always()
         uses: actions/upload-artifact@v7
         with:
-          name: allure-report
+          name: allure-report-${{ matrix.browser }}
+          path: ${{ github.workspace }}/allure-report-${{ matrix.browser }}/
+
+  merge-allure-reports:
+    name: Merge Allure Reports
+    if: always()
+    needs: run-ui-tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Download Allure results (chromium)
+        uses: actions/download-artifact@v5
+        continue-on-error: true
+        with:
+          name: allure-results-chromium
+          path: allure-results-chromium
+
+      - name: Download Allure results (firefox)
+        uses: actions/download-artifact@v5
+        continue-on-error: true
+        with:
+          name: allure-results-firefox
+          path: allure-results-firefox
+
+      - name: Download Allure results (webkit)
+        uses: actions/download-artifact@v5
+        continue-on-error: true
+        with:
+          name: allure-results-webkit
+          path: allure-results-webkit
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+
+      - name: Install Allure CLI
+        run: npm install -g allure-commandline@2
+
+      - name: Generate merged Allure report
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          RESULT_DIRS=()
+          for dir in allure-results-chromium allure-results-firefox allure-results-webkit; do
+            if [ -d "$dir" ] && find "$dir" -maxdepth 1 -type f -name '*.json' | grep -q .; then
+              RESULT_DIRS+=("$dir")
+            fi
+          done
+
+          if [ ${#RESULT_DIRS[@]} -eq 0 ]; then
+            echo "No Allure result artifacts were downloaded; skipping merged report generation."
+            exit 0
+          fi
+
+          allure generate "${RESULT_DIRS[@]}" -o allure-report --clean
+
+      - name: Upload merged Allure report
+        if: always() && hashFiles('allure-report/**') != ''
+        uses: actions/upload-artifact@v7
+        with:
+          name: allure-report-merged
           path: allure-report/
 
       - name: Upload Pages artifact
-        if: always() && github.event_name == 'push' && github.ref == 'refs/heads/main'
+        if: always() && github.event_name == 'push' && github.ref == 'refs/heads/main' && hashFiles('allure-report/**') != ''
         uses: actions/upload-pages-artifact@v5
         with:
-          path: ${{ github.workspace }}/allure-report
+          path: allure-report
+
+      - name: Add workflow summary
+        if: always()
+        shell: bash
+        run: |
+          RUN_URL="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          {
+            echo "## Playwright + Allure Summary"
+            echo
+            echo "- Run: [${{ github.run_id }}](${RUN_URL})"
+            echo "- Artifacts page: [View artifacts](${RUN_URL}#artifacts)"
+            echo
+            echo "### Browser Matrix"
+            echo "- chromium"
+            echo "- firefox"
+            echo "- webkit"
+            echo
+            echo "### Expected Artifacts"
+            echo "- test-results-trx-chromium"
+            echo "- test-results-trx-firefox"
+            echo "- test-results-trx-webkit"
+            echo "- allure-results-chromium"
+            echo "- allure-results-firefox"
+            echo "- allure-results-webkit"
+            echo "- allure-report-chromium"
+            echo "- allure-report-firefox"
+            echo "- allure-report-webkit"
+            echo "- allure-report-merged"
+            echo
+            echo "### Published Report"
+            echo "- On pushes to main, the merged report is published to GitHub Pages by the deploy job."
+          } >> "$GITHUB_STEP_SUMMARY"
 
   deploy-to-pages:
     name: Deploy to Pages
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    needs: run-ui-tests
+    needs: merge-allure-reports
     runs-on: ubuntu-latest
     timeout-minutes: 15
     permissions:

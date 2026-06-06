@@ -4,6 +4,13 @@ namespace playwrightreqnroll.Config
 {
     public static class ConfigReader
     {
+        private static readonly HashSet<string> SupportedBrowsers = new(StringComparer.OrdinalIgnoreCase)
+        {
+            "chromium",
+            "firefox",
+            "webkit"
+        };
+
         public static TestSettings Load()
         {
             var config = new ConfigurationBuilder()
@@ -40,6 +47,20 @@ namespace playwrightreqnroll.Config
             {
                 settings.VideoRetentionDays = videoRetentionDaysValue;
             }
+
+            var browserEnv = Environment.GetEnvironmentVariable("BROWSER");
+            if (!string.IsNullOrWhiteSpace(browserEnv))
+            {
+                settings.Browser = browserEnv.Trim();
+            }
+
+            if (!SupportedBrowsers.Contains(settings.Browser))
+            {
+                throw new InvalidOperationException(
+                    $"Unsupported browser '{settings.Browser}'. Supported values: chromium, firefox, webkit.");
+            }
+
+            settings.Browser = settings.Browser.ToLowerInvariant();
 
             return settings;
         }

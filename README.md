@@ -36,12 +36,25 @@ Notes:
    ```
    ./run-tests.local.ps1
    ```
+   To run a specific browser:
+
+```
+./run-tests.local.ps1 -Browser firefox
+```
+
+To run all supported browsers locally:
+
+```
+./run-tests.local.ps1 -Browser all
+```
+
 5. The script will:
 
 - build the project,
 - install Playwright browsers if needed,
-- run smoke tests,
-- generate and open the Allure report.
+- run smoke tests on the selected browser(s),
+- generate browser-specific Allure reports (`allure-report-chromium`, `allure-report-firefox`, `allure-report-webkit` as applicable),
+- generate and open one merged report in `allure-report`.
 
 ## Running Tests in GitHub Actions
 
@@ -70,7 +83,7 @@ If GitHub Pages is enabled for the repository, the report is published at the Pa
 - Screenshots and videos are attached to failed scenarios via the `AllureHook`.
 - The Reqnroll Allure plugin and results directory are configured in [reqnroll.json](reqnroll.json).
 - Additional Allure runtime behavior flags (`cleanResultsDirectory`, `enable`, `loggingLevel`) are configured in [allureConfig.json](allureConfig.json).
-- To view the report locally, run `allure open allure-report` after test execution, or let `run-tests.local.ps1` open it for you.
+- Local runs can produce browser-specific reports and a merged report. Use `allure open allure-report` for the merged view or `allure open allure-report-<browser>` for a browser-specific view.
 
 ## Security
 

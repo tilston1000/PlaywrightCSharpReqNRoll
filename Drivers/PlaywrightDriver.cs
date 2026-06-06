@@ -7,12 +7,13 @@ namespace playwrightreqnroll.Drivers
         private static readonly SemaphoreSlim BrowserInitLock = new(1, 1);
         private static IPlaywright? _playwright;
         private static IBrowser? _browser;
+        private static string? _browserName;
         private IBrowserContext? _context;
         public IPage? Page {get; private set;}
 
-        public async Task StartAsync(bool headless, string? videoDir = null, int timeout = 5000, int slowMo = 300)
+        public async Task StartAsync(string browserName, bool headless, string? videoDir = null, int timeout = 5000, int slowMo = 300)
         {
-            await EnsureBrowserAsync(headless, slowMo);
+            await EnsureBrowserAsync(browserName, headless, slowMo);
 
             _context = await _browser!.NewContextAsync(new BrowserNewContextOptions
             {
@@ -24,10 +25,18 @@ namespace playwrightreqnroll.Drivers
             Page = await _context.NewPageAsync();
         }
 
-        private static async Task EnsureBrowserAsync(bool headless, int slowMo)
+        private static async Task EnsureBrowserAsync(string browserName, bool headless, int slowMo)
         {
             if (_browser != null)
+            {
+                if (!string.Equals(_browserName, browserName, StringComparison.OrdinalIgnoreCase))
+                {
+                    throw new InvalidOperationException(
+                        $"Playwright browser is already initialized as '{_browserName}'. Requested '{browserName}'.");
+                }
+
                 return;
+            }
 
             await BrowserInitLock.WaitAsync();
             try
@@ -35,11 +44,21 @@ namespace playwrightreqnroll.Drivers
                 if (_browser == null)
                 {
                     _playwright = await Playwright.CreateAsync();
-                    _browser = await _playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions
+                    var browserType = browserName.ToLowerInvariant() switch
+                    {
+                        "chromium" => _playwright.Chromium,
+                        "firefox" => _playwright.Firefox,
+                        "webkit" => _playwright.Webkit,
+                        _ => throw new InvalidOperationException(
+                            $"Unsupported browser '{browserName}'. Supported values: chromium, firefox, webkit.")
+                    };
+
+                    _browser = await browserType.LaunchAsync(new BrowserTypeLaunchOptions
                     {
                         Headless = headless,
                         SlowMo = slowMo
                     });
+                    _browserName = browserName;
                 }
             }
             finally
@@ -58,6 +77,8 @@ namespace playwrightreqnroll.Drivers
                     await _browser.CloseAsync();
                     _browser = null;
                 }
+
+                _browserName = null;
 
                 _playwright?.Dispose();
                 _playwright = null;
