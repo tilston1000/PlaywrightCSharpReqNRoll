@@ -1,7 +1,11 @@
 bin/
 obj/
+.vs/
 .env
 *.local.ps1
+*.user
+*.suo
+*.trx
 playwright-report/
 test-results/
 allure-results/

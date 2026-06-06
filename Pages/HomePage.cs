@@ -1,13 +1,14 @@
 using Microsoft.Playwright;
+using playwrightreqnroll.Config;
 using playwrightreqnroll.Drivers;
-using playwrightreqnroll.Hooks;
 
 namespace playwrightreqnroll.Pages
 {
     public class HomePage
     {
         private readonly PlaywrightDriver _driver;
-        private IPage Page => _driver.Page!;
+        private readonly TestSettings _settings;
+        private IPage Page => _driver.Page ?? throw new InvalidOperationException("Playwright page is not initialized. Ensure the driver is started before using HomePage.");
 
         private const string UserNameSelector = "#user-name";
         private const string PasswordSelector = "#password";
@@ -16,19 +17,18 @@ namespace playwrightreqnroll.Pages
         private const string LogoutLinkSelector = "#logout_sidebar_link";
 
 
-        public HomePage(PlaywrightDriver driver)
+        public HomePage(PlaywrightDriver driver, TestSettings settings)
         {
             _driver = driver;
-            if (_driver.Page == null)
-                throw new InvalidOperationException("Playwright page is not initialized. Ensure the driver is started before using HomePage.");
+            _settings = settings;
         }
 
         public async Task Navigate()
         {
-            if (PlaywrightHooks.Settings == null || string.IsNullOrWhiteSpace(PlaywrightHooks.Settings.BaseUrl))
+            if (string.IsNullOrWhiteSpace(_settings.BaseUrl))
                 throw new InvalidOperationException("BaseUrl is not configured.");
 
-            await Page.GotoAsync(PlaywrightHooks.Settings.BaseUrl);
+            await Page.GotoAsync(_settings.BaseUrl);
         }
 
         public async Task Login(string userName, string password)

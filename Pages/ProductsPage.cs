@@ -6,7 +6,7 @@ namespace playwrightreqnroll.Pages
     public class ProductsPage
     {
         private readonly PlaywrightDriver _driver;
-        private IPage Page => _driver.Page!;
+        private IPage Page => _driver.Page ?? throw new InvalidOperationException("Playwright page is not initialized. Ensure the driver is started before using ProductsPage.");
 
         private const string InventoryItemButtonSelector = ".inventory_item_button";
         private const string ShoppingCartLinkSelector = ".shopping_cart_link";
@@ -16,8 +16,6 @@ namespace playwrightreqnroll.Pages
         public ProductsPage(PlaywrightDriver driver)
         {
             _driver = driver;
-            if (_driver.Page == null)
-                throw new InvalidOperationException("Playwright page is not initialized. Ensure the driver is started before using ProductsPage.");
         }
 
         public async Task AddFirstItemToCart()
@@ -36,7 +34,7 @@ namespace playwrightreqnroll.Pages
             return Page.Locator(selector);
         }
 
-        public static async Task AddToCart(ILocator productContainer)
+        private static async Task ClickAddToCartAsync(ILocator productContainer)
         {
             var addButton = productContainer.GetByRole(AriaRole.Button, new() { Name = AddToCartButtonName });
             await addButton.ClickAsync();
@@ -45,7 +43,7 @@ namespace playwrightreqnroll.Pages
         public async Task AddProductToCartByName(string productName)
         {
             var productContainer = GetProductContainerByName(productName);
-            await AddToCart(productContainer);
+            await ClickAddToCartAsync(productContainer);
         }
     }
 }

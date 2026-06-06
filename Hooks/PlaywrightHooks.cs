@@ -1,24 +1,30 @@
 
-using DotNetEnv;
 using Reqnroll;
 using playwrightreqnroll.Drivers;
 using playwrightreqnroll.Config;
+using playwrightreqnroll.Helpers;
 
 namespace playwrightreqnroll.Hooks
 {
     [Binding]
-    public class PlaywrightHooks(PlaywrightDriver driver, ScenarioContext scenarioContext)
+    public class PlaywrightHooks(PlaywrightDriver driver, ScenarioContext scenarioContext, TestSettings settings, TestArtifactHelper testArtifactHelper)
     {
-        private static TestSettings? _settings;
-        public static TestSettings? Settings => _settings;
         private readonly PlaywrightDriver _driver = driver;
         private readonly ScenarioContext _scenarioContext = scenarioContext;
+        private readonly TestSettings _settings = settings;
+        private readonly TestArtifactHelper _testArtifactHelper = testArtifactHelper;
 
         [BeforeTestRun]
         public static void GlobalTestRunSetup()
         {
-            LoadEnvVariables();
-            CleanUpOldVideos();
+            TestStartupHelper.LoadEnvVariables();
+            TestStartupHelper.CleanUpOldVideos();
+        }
+
+        [AfterTestRun]
+        public static async Task GlobalTestRunTeardown()
+        {
+            await PlaywrightDriver.DisposeSharedAsync();
         }
 
         [BeforeScenario(Order = -1)]
@@ -41,113 +47,17 @@ namespace playwrightreqnroll.Hooks
         [BeforeScenario()]
         public async Task InitializeScenarioWithVideo()
         {
-            var (safeScenarioName, safeProductName) = GetSafeNames();
-            var videoDir = GetVideoDirectory(safeScenarioName, safeProductName);
+            var videoDir = _testArtifactHelper.GetVideoDirectory(_scenarioContext);
             Directory.CreateDirectory(videoDir);
-            await _driver.StartAsync(Settings?.Headless ?? true, videoDir, Settings?.Timeout ?? 5000, Settings?.SlowMo ?? 300);
+            await _driver.StartAsync(_settings.Headless, videoDir, _settings.Timeout, _settings.SlowMo);
         }
 
         [AfterScenario(Order = 0)]
         public async Task CleanupScenarioArtifacts()
         {
-            await CaptureScreenshotOnFailureAsync();
-            await HandleVideoAsync();
+            await _testArtifactHelper.CaptureScreenshotOnFailureAsync(_scenarioContext, _driver);
+            await _testArtifactHelper.HandleVideoAsync(_scenarioContext, _driver);
             await _driver.DisposeAsync();
-        }
-
-        private async Task CaptureScreenshotOnFailureAsync()
-        {
-            if(_scenarioContext.TestError == null || _driver.Page == null)
-                return; 
-
-            var screenshotsDir = Settings?.ScreenshotsDirectory ?? "screenshots";  
-            var (safeScenarioName, safeProductName) = GetSafeNames();
-            
-            var screenshotPath = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", screenshotsDir, $"{safeScenarioName}_{safeProductName}_{DateTime.Now:ddMMyyyy_HHmmss}.png"));
-
-            var dir = Path.GetDirectoryName(screenshotPath);
-            if(dir != null)
-                Directory.CreateDirectory(dir);
-
-            await _driver.Page.ScreenshotAsync(new() { Path = screenshotPath, FullPage = true });
-            _scenarioContext["PlaywrightScreenshotPath"] = screenshotPath;   
-        }
-
-        private async Task HandleVideoAsync()
-        {
-            if (_driver.Page?.Video == null)
-                return;
-
-            await _driver.Page.CloseAsync();
-            var videoPath = await _driver.Page.Video.PathAsync();
-            _scenarioContext["PlaywrightVideoPath"] = videoPath;
-        }
-
-        private static string GetSafeScenarioName(string scenarioName)
-        {
-            var safeName = string.Concat(scenarioName.Split(Path.GetInvalidFileNameChars()));
-            safeName = safeName.Replace("<", "").Replace(">", "");
-            return safeName;
-        }
-
-        private static string GetVideoDirectory(string safeScenarioName, string safeProductName)
-        {
-            var videosDir = Settings?.VideosDirectory ?? "videos";
-            var timestamp = DateTime.Now.ToString("ddMMyyyy_HHmmss");
-            return Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", videosDir, $"{safeScenarioName}_{safeProductName}_{timestamp}"));
-        }
-
-        private static void LoadEnvVariables()
-        {
-            // Robustly search for .env in parent directories
-            string? dir = AppContext.BaseDirectory;
-            string? envPath = null;
-            while (dir != null)
-            {
-                var candidate = Path.Combine(dir, ".env");
-                if (File.Exists(candidate))
-                {
-                    envPath = candidate;
-                    break;
-                }
-                dir = Path.GetDirectoryName(dir);
-            }
-            if (envPath != null)
-            {
-                Env.Load(envPath);
-            }
-            else
-            {
-                Console.WriteLine("[WARN] .env file not found in any parent directory.");
-            }
-            _settings = ConfigReader.Load();
-        }
-
-        private static void CleanUpOldVideos()
-        {
-            // Deletes videos older than 1 days
-            var videosDir = Settings?.VideosDirectory ?? "videos";
-            var videosPath = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", videosDir));
-            if (Directory.Exists(videosPath))
-            {
-                var cutoff = DateTime.Now.AddDays(-1);
-                foreach (var file in Directory.GetFiles(videosPath, "*", SearchOption.AllDirectories))
-                {
-                    var info = new FileInfo(file);
-                    if (info.LastWriteTime < cutoff)
-                    {
-                        info.Delete();
-                    }
-                }
-            }
-        }
-
-        private (string SafeScenarioName, string SafeProductName) GetSafeNames()
-        {
-            var safeScenarioName = GetSafeScenarioName(_scenarioContext.ScenarioInfo.Title);
-            _scenarioContext.TryGetValue("ProductName", out var productNameObj);
-            var safeProductName = productNameObj is string name && !string.IsNullOrWhiteSpace(name) ? GetSafeScenarioName(name): "";
-            return (safeScenarioName, safeProductName);
         }
 
     }

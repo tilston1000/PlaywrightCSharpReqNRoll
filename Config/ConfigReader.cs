@@ -27,6 +27,12 @@ namespace playwrightreqnroll.Config
                 settings.SlowMo = slowMoValue;
             }
 
+            var videoRetentionDaysEnv = Environment.GetEnvironmentVariable("VideoRetentionDays");
+            if(!string.IsNullOrEmpty(videoRetentionDaysEnv) && int.TryParse(videoRetentionDaysEnv, out var videoRetentionDaysValue))
+            {
+                settings.VideoRetentionDays = videoRetentionDaysValue;
+            }
+
             return settings;
         }
     }

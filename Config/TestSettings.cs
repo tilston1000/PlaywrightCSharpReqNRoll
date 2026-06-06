@@ -8,6 +8,7 @@ namespace playwrightreqnroll.Config
         public required string ScreenshotsDirectory {get; set;} 
         public required string VideosDirectory {get; set;}
         public int SlowMo { get; set; } = 300;
+        public int VideoRetentionDays { get; set; } = 1;
     } 
 }
 
