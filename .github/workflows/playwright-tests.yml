@@ -197,9 +197,9 @@ jobs:
       - name: Restore Allure history for trend tracking
         shell: bash
         run: |
-          if [ -d "allure-results-history" ] && [ -d "allure-results-history/history" ]; then
+          if [ -d "allure-results-history" ] && find "allure-results-history" -maxdepth 1 -type f -name '*.json' | grep -q .; then
             mkdir -p allure-results-history-only/history
-            cp -r allure-results-history/history/* allure-results-history-only/history/ 2>/dev/null || true
+            cp -r allure-results-history/* allure-results-history-only/history/ 2>/dev/null || true
             echo "History restored into dedicated folder for trend tracking."
           else
             echo "No previous history found; starting fresh."
